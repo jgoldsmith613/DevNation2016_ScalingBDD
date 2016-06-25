@@ -7,7 +7,7 @@
 		<version>1.0</version>
 	</parent>
 	<artifactId>lab-test-harness</artifactId>
-	<name>Associate Bootcamp Lab :: Test Harness</name>
+	<name>Dev Nation Testing Lab :: Test Harness</name>
 	<dependencies>
 		<!-- IntraProject Dependencies -->
 		<dependency>

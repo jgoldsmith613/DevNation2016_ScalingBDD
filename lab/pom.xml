@@ -3,12 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.rhc</groupId>
-		<artifactId>nch-bootcamp</artifactId>
+		<artifactId>devnation-testing</artifactId>
 		<version>1.0</version>
 	</parent>
 	<artifactId>lab</artifactId>
 	<packaging>pom</packaging>
-	<name>Associate Bootcamp Lab :: Parent</name>
+	<name>Dev Nation Testing Lab :: Parent</name>
 
 	<modules>
 		<module>lab-domain</module>
@@ -84,10 +84,10 @@
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-mongodb</artifactId>
 				<version>${spring.data.version}</version>
-				<!-- <exclusions> <exclusion> <groupId>org.springframework</groupId> 
-					<artifactId>spring-tx</artifactId> </exclusion> <exclusion> <groupId>org.springframework</groupId> 
-					<artifactId>spring-core</artifactId> </exclusion> <exclusion> <groupId>org.springframework</groupId> 
-					<artifactId>spring-beans</artifactId> </exclusion> <exclusion> <groupId>org.springframework</groupId> 
+				<!-- <exclusions> <exclusion> <groupId>org.springframework</groupId>
+					<artifactId>spring-tx</artifactId> </exclusion> <exclusion> <groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId> </exclusion> <exclusion> <groupId>org.springframework</groupId>
+					<artifactId>spring-beans</artifactId> </exclusion> <exclusion> <groupId>org.springframework</groupId>
 					<artifactId>spring-expression</artifactId> </exclusion> </exclusions> -->
 			</dependency>
 

@@ -7,7 +7,7 @@
 		<version>1.0</version>
 	</parent>
 	<artifactId>lab-kie-services</artifactId>
-	<name>Associate Bootcamp Lab :: Business Process + Rules</name>
+	<name>Dev Nation Testing Lab :: Business Process + Rules</name>
 
 	<dependencies>
 		<!-- IntraProject Dependencies -->

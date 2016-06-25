@@ -7,7 +7,7 @@
 		<version>1.0</version>
 	</parent>
 	<artifactId>lab-camel-services</artifactId>
-	<name>Associate Bootcamp Lab :: Camel Integration</name>
+	<name>Dev Nation Testing Lab :: Camel Integration</name>
 
 	<dependencies>
 		<!-- IntraProject Dependencies -->

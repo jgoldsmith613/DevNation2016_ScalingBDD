@@ -7,14 +7,14 @@
 		<version>1.0</version>
 	</parent>
 	<artifactId>lab-domain</artifactId>
-	<name>Associate Bootcamp Lab :: Domain</name>
+	<name>Dev Nation Testing Lab :: Domain</name>
 
-	<!-- XXX Tip: Avoid adding dependencies to the domain model as much as possible 
+	<!-- XXX Tip: Avoid adding dependencies to the domain model as much as possible
 		(Except Joda Time when Java Version < 8) -->
 
 
 	<dependencies>
-	
+
 		<!-- Spring Data Dependencies -->
 		<dependency>
 			<groupId>org.springframework.data</groupId>

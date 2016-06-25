@@ -1,7 +1,0 @@
-Slides are on slides.com: http://redhat.slides.com/jholmes/deck-3#/
-
-The rest of the files are used to configure the CI/CD stuff. They assume ssh keys are properly configured with openshift.
-
-copy-file.sh will copy artifacts to the jenkins machine
-deploy.txt has the content needed for deploy to openshift step
-instructions are just notes for me to talk people through it

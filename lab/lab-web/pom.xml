@@ -8,7 +8,7 @@
 	</parent>
 	<artifactId>lab-web</artifactId>
 	<packaging>war</packaging>
-	<name>Associate Bootcamp Lab :: Web MVC</name>
+	<name>Dev Nation Testing Lab :: Web MVC</name>
 
 	<dependencies>
 		<!-- IntraProject Dependencies -->
