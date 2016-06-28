@@ -1,0 +1,159 @@
+package rules;
+import com.rhc.lab.domain.BookingRequest;
+import com.rhc.lab.domain.BookingResponse;
+import com.rhc.lab.domain.Booking;
+import com.rhc.lab.domain.Venue;
+import java.util.Date;
+
+dialect "java"
+
+rule "Object inserted"
+ruleflow-group "validate"
+when
+	Object()
+then
+	System.out.println("thar she blows");
+end
+
+// XXX-Instructions
+rule "Venue revokes requests with no open date"
+	ruleflow-group "validate"
+	when
+	$response : BookingResponse(status ==null || status == "")
+		$obj:BookingRequest(open == null)
+	then
+				modify($response){
+		setStatus("REVOKED"),
+		getBookingStatus().add("REVOKED");
+		};
+		
+end
+
+rule "Venue revokes requests with no close date"
+	ruleflow-group "validate"
+	when
+	$response : BookingResponse(status ==null)
+		$obj:BookingRequest(close == null)
+	then
+					modify($response){
+		setStatus("REVOKED"),
+		getBookingStatus().add("REVOKED");
+		};
+end
+
+rule "Create Booking from Booking Request"
+	ruleflow-group "validate"
+	when
+		$obj:BookingRequest ()
+	then
+		Booking booking = new Booking($obj);
+		insert(booking);
+end
+
+rule "Venue revokes unsuitable Performances"
+	ruleflow-group "validate"
+	when 
+	$response : BookingResponse(status ==null)
+		$bookingRequest: BookingRequest()
+		$venue: Venue(accomodations not contains $bookingRequest.performer.type)
+	then
+						modify($response){
+		setStatus("REVOKED"),
+		getBookingStatus().add("REVOKED");
+		};
+end
+
+// XXX-Instructions
+
+rule "Case 1 - Venue revokes requests for busy venues"
+	ruleflow-group "validate"
+	dialect "mvel"
+	when
+		$response : BookingResponse(status ==null)
+		$bookingRequest: BookingRequest($venueName : venueName, $requestOpen : open, $requestClose : close)
+		Booking(
+					venueName == $venueName
+					, $requestOpen > open
+					, $requestOpen < close
+		)
+	then				
+	modify($response){
+		setStatus("REVOKED"),
+		getBookingStatus().add("REVOKED");
+		};
+end
+
+// XXX-Instructions
+rule "Case 2 - Venue revokes requests for busy venues"
+	ruleflow-group "validate"
+	dialect "mvel"
+	when
+		$response : BookingResponse(status ==null)
+		$bookingRequest: BookingRequest($venueName : venueName, $requestOpen : open, $requestClose : close)
+		Booking(
+					venueName == $venueName
+					, $requestClose > open
+					, $requestClose < close
+		)
+	then
+		modify($response){
+		setStatus("REVOKED"),
+		getBookingStatus().add("REVOKED");
+		};
+end
+
+//rule "Return Confirmed if no errors"
+//ruleflow-group "confirm"
+//dialect "mvel"
+//when
+//	not BookingStatus()
+//then
+//	insert(BookingStatus.CONFIRMED);
+//end
+
+
+rule "Populate Requests"
+	ruleflow-group "populate response"
+	dialect "mvel"
+	when
+
+		$request : BookingRequest()
+		
+		$response :  BookingResponse(bookingRequests.size <=0)
+	then
+		modify($response){
+			getBookingRequests().add($request);
+		};
+		retract($request);
+		System.out.println("" + $response);
+		System.out.println("attempted to alter this");
+end
+
+//rule "Populate Booking Status response Denied"
+//	ruleflow-group "populate response"
+//	when
+//		$response :  BookingResponse(status == null)
+//		$status : BookingStatus()
+//	then
+	//	modify($response){
+	//	setStatus("REVOKED"),
+	//	getBookingStatus().add("REVOKED");
+	//	};
+	//end
+	
+
+
+rule "Populate Booking Status on response confirmed"
+	ruleflow-group "populate response"
+	when 
+		$response : BookingResponse(status == null)
+		//not BookingStatus()
+	then
+		modify($response){
+			setStatus("CONFIRMED"),
+			getBookingStatus().add("CONFIRMED");
+		};
+end
+
+
+

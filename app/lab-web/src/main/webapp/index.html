@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Here is where you tie in all of the Javascript and most of the CSS that your app requires -->
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+    content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+  <meta name="format-detection"
+    content="telephone=no">
+  <title></title>
+
+</head>
+
+<head>
+
+<!-- Vendor libraries -->
+<script src="www/vendor/angular/angular.min.js"></script>
+<link rel="stylesheet" href="www/vendor/angular/angular-csp.css">
+
+<script src="www/vendor/angular-ui-router/release/angular-ui-router.min.js"></script>
+
+<script src="www/vendor/angular-resource/angular-resource.min.js"></script>
+
+<script src="www/vendor/angular-bootstrap-multiselect/angular-bootstrap-multiselect.js"></script>
+
+<script src="www/vendor/spin.js/spin.js"></script>
+<script src="www/vendor/angular-spinner/angular-spinner.js"></script>
+
+
+<script src="www/vendor/angular-bootstrap/ui-bootstrap.min.js"></script>
+<script src="www/vendor/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<link rel="stylesheet" href="www/vendor/angular-bootstrap/ui-bootstrap-csp.css"></script>
+
+<script src="www/vendor/ramda/dist/ramda.min.js"></script>
+
+<link rel="stylesheet" href="www/vendor/bootstrap/dist/css/bootstrap.min.css">
+
+<!-- Main App's modules-->
+<script src="www/core/app.js"></script>
+
+<script src="www/core/concert/concert.js"></script>
+<script src="www/core/concert/concert-service.js"></script>
+
+<script src="www/core/user/user.js"></script>
+<script src="www/core/user/user-service.js"></script>
+
+<script src="www/sections/login/login.js"></script>
+<script src="www/sections/login/login-controller.js"></script>
+
+<script src="www/sections/home/home.js"></script>
+<script src="www/sections/home/home-controller.js"></script>
+
+<script src="www/components/performances/performances.js"></script>
+<script src="www/components/performances/performances-directive.js"></script>
+<script src="www/components/performances/performances-controller.js"></script>
+
+<script src="www/components/performances/add-modal/add.js"></script>
+<script src="www/components/performances/add-modal/add-controller.js"></script>
+
+<script src="www/components/venues/venues.js"></script>
+<script src="www/components/venues/venues-directive.js"></script>
+<script src="www/components/venues/venues-controller.js"></script>
+
+<script src="www/components/venues/add-modal/add.js"></script>
+<script src="www/components/venues/add-modal/add-controller.js"></script>
+
+</head>
+
+<!-- Defining your App and UI Router -->
+<body ng-app="aceConcerts">
+  <div ui-view>
+  </div>
+</body>
+
+</html>

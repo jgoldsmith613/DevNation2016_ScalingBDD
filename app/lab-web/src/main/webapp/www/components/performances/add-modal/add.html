@@ -1,0 +1,68 @@
+<div class="modal-lg add-lg" id="add">
+  <form>
+    <div class="modal-header">
+        <h3 class="modal-title">Request a Booking</h3>
+    </div>
+    <div class="modal-body">
+
+        <label>Select Venue</label>
+        <select class="form-control" ng-model="add.selectedVenue"
+          ng-options="venue as venue.name for venue in add.venues" ng-change="add.getPerformanceTypes()"></select>
+
+
+        <label>Performer Name</label>
+        <input class="form-control" ng-model="add.performance.performer.name">
+
+
+        <label>Performance Type</label>
+        <select class="form-control" ng-model="add.selectedType" ng-change="add.setPerformanceType()"
+          ng-options="accomodation as accomodation.label for accomodation in add.accomodations"></select>
+
+
+        <label>Description</label>
+        <textarea class="form-control" ng-model="add.performance.performer.description"></textarea>
+
+      <div>
+        <label>Open Date</label>
+        <p class="input-group">
+          <input class="form-control" type="text"
+          uib-datepicker-popup="shortDate"
+          ng-model="add.performance.open"
+          is-open="add.openDatePop.opened"
+          datepicker-options="add.openDatePop.dateOptions"
+          popup-placement="bottom-right"/>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default"
+              ng-click="add.openDatePop.open()">
+              <i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+      </div>
+
+      <div>
+        <label>Close Date</label>
+        <p class="input-group">
+          <input class="form-control" type="text"
+            uib-datepicker-popup="shortDate"
+            ng-model="add.performance.close"
+            is-open="add.closeDatePop.opened"
+            datepicker-options="add.closeDatePop.dateOptions"
+            popup-placement="bottom-right"/>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default"
+              ng-click="add.closeDatePop.open()">
+              <i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-lg btn-primary" type="submit" ng-click="add.request()">Request</button>
+        <button class="btn btn-lg btn-warning" type="cancel" ng-click="add.cancel()">Cancel</button>
+    </div>
+    <div class="alert alert-danger" ng-show="add.showAlert">
+      <strong>Invalid!</strong> Must fill out all fields exept description.
+    </div>
+  </form>
+</div>

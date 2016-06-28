@@ -1,0 +1,32 @@
+<div class="modal-lg add-sm" id="add">
+  <form>
+    <div class="modal-header">
+        <h3 class="modal-title">Create a Venue</h3>
+    </div>
+    <div class="modal-body">
+
+        <label>Name</label>
+        <input class="form-control" ng-model="add.venue.name">
+
+
+        <label>City</label>
+        <input class="form-control" ng-model="add.venue.city">
+
+
+        <label>Capacity</label>
+        <input type="number" class="form-control" ng-model="add.venue.capacity">
+
+        <label>Accomodations</label>
+        <p><multiselect ng-change="add.setAccomodations()" ng-model="add.selectedAccomodations"
+          options="type as type.label for type in add.venueTypes" data-multiple="true"></multiselect></p>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-lg btn-primary" type="submit" ng-click="add.create()">Create</button>
+        <button class="btn btn-lg btn-warning" type="cancel" ng-click="add.cancel()">Cancel</button>
+    </div>
+    <div class="alert alert-danger" ng-show="add.showAlert">
+      <strong>Invalid!</strong> Must fill out all fields.
+    </div>
+  </form>
+</div>

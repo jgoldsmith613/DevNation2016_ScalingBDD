@@ -1,0 +1,20 @@
+{
+  "BookingRequest": {
+     "venueName": "boo",
+     "performer": {
+       "name": "Bob",
+       "description": null,
+       "type": "COMIC"
+     },
+     "open": "2016-05-30T18:00:00.000Z",
+     "close": "2016-05-30T20:00:00.000Z"
+  },
+  "Venue": {
+       "name": "boo34",
+       "city": "New York, City",
+       "capacity": 1000000,
+       "accomodations": [
+         "COMIC"
+       ]
+  }
+}

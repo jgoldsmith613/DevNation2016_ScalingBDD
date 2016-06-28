@@ -1,0 +1,31 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:kie="http://drools.org/schema/kie-spring"
+	xsi:schemaLocation=" http://www.springframework.org/schema/beans
+	 http://www.springframework.org/schema/beans/spring-beans.xsd
+	  http://www.springframework.org/schema/util
+	   http://www.springframework.org/schema/util/spring-util.xsd
+http://drools.org/schema/kie-spring http://drools.org/schema/kie-spring.xsd ">
+
+	<import resource="classpath*:kie-context.xml" />
+
+
+	<!-- Default -->
+	<beans profile="default">
+		<import resource="classpath:mongodb-context.xml" />
+
+	</beans>
+	
+	<!-- Openshift -->
+	<beans profile="openshift">
+		<import resource="classpath:mongodb-openshift-context.xml" />
+	</beans>
+
+	<!-- Base Unit Test Configuration -->
+	<beans profile="test">
+		<import resource="classpath*:testRepositories.xml" />
+	</beans>
+
+
+
+</beans>

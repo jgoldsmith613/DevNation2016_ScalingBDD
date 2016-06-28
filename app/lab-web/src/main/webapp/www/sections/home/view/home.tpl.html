@@ -1,0 +1,27 @@
+<div class="container theme-showcase" role="main">
+
+		<link rel="stylesheet" href="www/sections/home/view/home.css">
+
+		<!-- Main jumbotron for a primary marketing message or call to action -->
+		<div class="jumbotron">
+			<h1>Associate Consultant Bootcamp</h1>
+			<p>This is our website where performers can request bookings at
+				Venues and Venues can add themselves for performances.</p>
+		</div>
+
+		<ul class="nav nav-tabs nav-justified">
+			<li ng-class="home.venues.class"><a ng-click="home.venues.show()">Venues</a></li>
+			<li ng-class="home.perfs.class"><a ng-click="home.perfs.show()">Upcoming
+					Performances</a></li>
+		</ul>
+
+			<div ng-show="home.perfs.class === 'active'">
+				<performances></performances>
+			</div>
+
+			<div ng-show="home.venues.class === 'active'">
+				<venues></venues>
+			</div>
+
+		</div>
+	</div>
