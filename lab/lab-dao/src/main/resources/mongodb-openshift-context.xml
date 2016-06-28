@@ -7,20 +7,20 @@
 	http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
 
-	<bean
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location">
-			<value>classpath:/mongodb.properties</value>
-		</property>
-	</bean>
+<!-- 	<bean -->
+<!-- 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> -->
+<!-- 		<property name="location"> -->
+<!-- 			<value>classpath:/mongodb.properties</value> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
 
-	<!-- Mongo Server Configuration -->
-	<mongo:mongo-client id="client" host="${mongodb.host}" port="${mongodb.port}" credentials="${mongodb.username}:${mongodb.password}@${mongodb.dbname}"></mongo:mongo-client>
-	<mongo:db-factory dbname="${mongodb.dbname}" mongo-ref="client"/>
-	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
-	</bean>
+<!-- 	 Mongo Server Configuration -->
+<!-- 	<mongo:mongo-client id="client" host="${mongodb.host}" port="${mongodb.port}" credentials="${mongodb.username}:${mongodb.password}@${mongodb.dbname}"></mongo:mongo-client> -->
+<!-- 	<mongo:db-factory dbname="${mongodb.dbname}" mongo-ref="client"/> -->
+<!-- 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate"> -->
+<!-- 		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" /> -->
+<!-- 	</bean> -->
 
-	<mongo:repositories base-package="com.rhc.lab" />
+<!-- 	<mongo:repositories base-package="com.rhc.lab" /> -->
 
 </beans>

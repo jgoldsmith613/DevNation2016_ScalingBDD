@@ -10,20 +10,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.rhc.lab.domain.BookingRequest;
 import com.rhc.lab.domain.Venue;
-import com.rhc.lab.kie.service.impl.LocalStatelessDecisionService;
+import com.rhc.lab.kie.api.StatelessDecisionService;
 import com.rhc.lab.service.BookingRequestService;
 
 public class LabRouteBuilder extends RouteBuilder {
 
 	@Autowired
 	BookingRequestService requestService;
-	@Resource(name = "localDecisionService")
-	LocalStatelessDecisionService localDecisionService;
+	@Resource(name = "decisionService")
+	StatelessDecisionService localDecisionService;
 
 	@Override
 	public void configure() throws Exception {
 
-		restConfiguration().component("restlet").host("localhost").port("8081")
+		restConfiguration().component("jetty").host("localhost").port("8081")
 				.enableCORS(true).bindingMode(RestBindingMode.json);
 
 		rest("/bookings")
@@ -87,7 +87,8 @@ public class LabRouteBuilder extends RouteBuilder {
 				.setHeader("responseClazz")
 				.constant("com.rhc.lab.domain.BookingResponse")
 				.bean(localDecisionService,
-						"executeForClass(${body}, bookingProcess, ${header.responseClazz})")
+						"execute(${body}, bookingProcess, ${header.responseClazz})")
+				.log(LoggingLevel.INFO, "Returned Body ${body}")
 				.bean(requestService, "saveBooking").to("mock:end");
 
 		// TODO actually update the Booking

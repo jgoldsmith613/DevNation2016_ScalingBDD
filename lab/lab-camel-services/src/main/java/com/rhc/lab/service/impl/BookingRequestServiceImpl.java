@@ -88,7 +88,7 @@ public class BookingRequestServiceImpl implements BookingRequestService {
 		try {
 			// attempting to save the bookings returned
 			if (response.getBookingStatus().iterator().next()
-					.equalsIgnoreCase("CONFRIMED")) {
+					.equalsIgnoreCase("CONFIRMED")) {
 
 				logger.info("Attempting to save booking: " + booking.toString());
 				booking = bookingRepo.save(booking);

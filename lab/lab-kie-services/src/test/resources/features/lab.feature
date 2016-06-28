@@ -24,6 +24,7 @@ Feature: Book Artists at Venues
     When validating the booking
     Then the booking should be "REVOKED"
 
+	@wip
   Scenario: Allow a BAND to play an open timeslot
     Given a venue "The Cellar" with an occupancy of "200"
     And the venue accomodates performances by a

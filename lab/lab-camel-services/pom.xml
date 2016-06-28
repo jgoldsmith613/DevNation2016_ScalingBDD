@@ -7,6 +7,7 @@
 		<version>1.0</version>
 	</parent>
 	<artifactId>lab-camel-services</artifactId>
+	<packaging>war</packaging>
 	<name>Dev Nation Testing Lab :: Camel Integration</name>
 
 	<dependencies>
@@ -51,6 +52,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jetty</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-mongodb</artifactId>
 		</dependency>
 		<dependency>
@@ -74,7 +79,42 @@
 			<artifactId>slf4j-log4j12</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
 
 
 	</dependencies>
+	
+	<profiles>
+		<profile>
+			<id>default</id>
+			<build>
+				<finalName>devnation-camel</finalName>
+				<plugins>
+					<plugin>
+						<artifactId>maven-war-plugin</artifactId>
+						<version>2.4</version>
+						<configuration>
+							<outputDirectory>webapps</outputDirectory>
+							<warName>devnation-camel</warName>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

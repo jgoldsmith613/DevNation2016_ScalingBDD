@@ -164,8 +164,15 @@ public class BookingValidationSteps {
 				BookingResponse.class);
 		System.out.println(response.toString());
 		Assert.assertTrue(response.getClass() == BookingResponse.class);
-		saveBooking((BookingResponse) response);
 		this.response = (BookingResponse) response;
+		Assert.assertNotNull("Requests not attached",
+				this.response.getBookingRequests());
+		Assert.assertFalse("Requests empty", this.response.getBookingRequests()
+				.isEmpty());
+		System.out.println("" + this.response.getBookingRequests().size());
+		System.out.println(""
+				+ this.response.getBookingRequests().iterator().next());
+		saveBooking(this.response);
 
 		logger.info("When step");
 	}

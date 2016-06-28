@@ -86,7 +86,10 @@ public class Performer implements Serializable {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (type != other.type)
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
 			return false;
 		return true;
 	}

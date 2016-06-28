@@ -111,7 +111,6 @@ public class Booking implements Serializable, Comparable<Booking> {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((close == null) ? 0 : close.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((open == null) ? 0 : open.hashCode());
 		result = prime * result
 				+ ((performer == null) ? 0 : performer.hashCode());

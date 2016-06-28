@@ -8,8 +8,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import junit.framework.Assert;
-
 import org.apache.camel.CamelContext;
 import org.apache.camel.EndpointInject;
 import org.apache.camel.Exchange;
@@ -20,6 +18,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.spring.CamelSpringJUnit4ClassRunner;
 import org.apache.camel.test.spring.CamelTestContextBootstrapper;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -44,7 +43,7 @@ import com.rhc.lab.domain.Venue;
 @SuppressWarnings("deprecation")
 @RunWith(CamelSpringJUnit4ClassRunner.class)
 @BootstrapWith(CamelTestContextBootstrapper.class)
-@ActiveProfiles({ "test", "remote" })
+@ActiveProfiles({"test", "remote"})
 @ContextConfiguration(locations = {"classpath:camel-context.xml"})
 public class CamelServicesTest {
 
@@ -211,6 +210,10 @@ public class CamelServicesTest {
 		// Assert booking is saved to database
 		Booking booking = bookingDao.findOne(bookingId);
 		Assert.assertNotNull(booking);
+		System.out.println(book1.getClose().getTime());
+		System.out.println(booking.getClose().getTime());
+		System.out.println(book1.getOpen().getTime());
+		System.out.println(booking.getOpen().getTime());
 		Assert.assertEquals("not the right booking", book1, booking);
 
 	}

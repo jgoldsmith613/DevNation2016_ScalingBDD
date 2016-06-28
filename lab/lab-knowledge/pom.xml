@@ -7,6 +7,7 @@
   </parent>
   <artifactId>lab-knowledge</artifactId>
   <name>Dev Nation Testing Lab :: Knowledge Base</name>
+  <packaging>kjar</packaging>
   <dependencies>
 		<dependency>
 			<groupId>com.rhc</groupId>
@@ -23,9 +24,7 @@
 				<groupId>org.kie</groupId>
 				<artifactId>kie-maven-plugin</artifactId>
 				<version>${kie.version}</version>
-				<goals>
-					<goal>build</goal>
-				</goals>
+				<extensions>true</extensions>
 			</plugin>
 		</plugins>
 	</build>

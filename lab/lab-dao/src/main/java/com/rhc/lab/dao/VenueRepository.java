@@ -3,7 +3,6 @@ package com.rhc.lab.dao;
 import java.util.List;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.stereotype.Repository;
 
 import com.rhc.lab.domain.Venue;
 
@@ -14,7 +13,7 @@ import com.rhc.lab.domain.Venue;
  * collection
  * 
  */
-@Repository(value = "venueDao")
+// @Repository(value = "venueDao")
 public interface VenueRepository
 		extends
 			PagingAndSortingRepository<Venue, String> {

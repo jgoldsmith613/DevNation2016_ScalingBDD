@@ -8,14 +8,14 @@
 http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
 
 
-	<!-- Mongo Server Configuration -->
-	<mongo:mongo-client id="localdb" host="localhost" port="27017" />
-	<mongo:db-factory dbname="nch-bootcamp-lab" mongo-ref="localdb" id="mongoDbFactory"/>
-	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
-	</bean>
+<!-- 	Mongo Server Configuration  -->
+<!-- 	<mongo:mongo-client id="localdb" host="localhost" port="27017" /> -->
+<!-- 	<mongo:db-factory dbname="nch-bootcamp-lab" mongo-ref="localdb" id="mongoDbFactory"/> -->
+<!-- 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate"> -->
+<!-- 		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" /> -->
+<!-- 	</bean> -->
 
-	<mongo:repositories base-package="com.rhc.lab" />
+<!-- 	<mongo:repositories base-package="com.rhc.lab" /> -->
 
 
 </beans>

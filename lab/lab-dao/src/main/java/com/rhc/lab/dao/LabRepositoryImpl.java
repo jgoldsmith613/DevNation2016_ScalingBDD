@@ -8,7 +8,6 @@ import javax.annotation.Resource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Repository;
 
 import com.rhc.lab.domain.Booking;
 
@@ -16,7 +15,7 @@ import com.rhc.lab.domain.Booking;
  * Class acts as the DAO for miscellaneous query use with the MongoTemplate
  * 
  */
-@Repository(value = "labDao")
+// @Repository(value = "labDao")
 public class LabRepositoryImpl implements LabRepository {
 
 	@Resource(name = "labDao")

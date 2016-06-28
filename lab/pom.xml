@@ -14,11 +14,10 @@
 		<module>lab-domain</module>
 		<module>lab-test-harness</module>
 		<module>lab-dao</module>
-		<module>lab-web</module>
 		<module>lab-camel-services</module>
-		<module>lab-knowledge</module>
 		<module>lab-kie-services</module>
-
+		<module>kie-testing</module>
+		<module>lab-kie-test</module>
 	</modules>
 
 	<properties>
@@ -188,6 +187,11 @@
 			<dependency>
 				<groupId>org.apache.camel</groupId>
 				<artifactId>camel-core</artifactId>
+				<version>${camel.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-jetty</artifactId>
 				<version>${camel.version}</version>
 			</dependency>
 			<dependency>

@@ -60,6 +60,7 @@ public class BookingResponse implements Serializable {
 		return bookingRequests;
 	}
 	public void setBookingRequests(Collection<BookingRequest> bookingRequest) {
+
 		this.bookingRequests = bookingRequest;
 	}
 	public Booking getBooking() {

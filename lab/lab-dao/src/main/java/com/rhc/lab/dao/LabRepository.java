@@ -2,8 +2,6 @@ package com.rhc.lab.dao;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
-
 import com.rhc.lab.domain.Booking;
 
 /**
@@ -11,7 +9,7 @@ import com.rhc.lab.domain.Booking;
  * MongoTemplate
  * 
  */
-@Repository
+// @Repository
 public interface LabRepository {
 
 	/**

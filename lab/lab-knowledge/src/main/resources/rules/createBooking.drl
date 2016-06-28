@@ -113,14 +113,20 @@ end
 
 
 rule "Populate Requests"
-	ruleflow-group "populate repsonse"
+	ruleflow-group "populate response"
+	dialect "mvel"
 	when
-		$response : BookingResponse()
+
 		$request : BookingRequest()
-	then
-		$response.getBookingRequests().add($request);
-		System.out.println("attempted to alter this");
 		
+		$response :  BookingResponse(bookingRequests.size <=0)
+	then
+		modify($response){
+			getBookingRequests().add($request);
+		};
+		retract($request);
+		System.out.println("" + $response);
+		System.out.println("attempted to alter this");
 end
 
 //rule "Populate Booking Status response Denied"
