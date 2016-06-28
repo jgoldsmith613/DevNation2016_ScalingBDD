@@ -14,10 +14,8 @@
 		<module>lab-domain</module>
 		<module>lab-test-harness</module>
 		<module>lab-dao</module>
-		<module>lab-camel-services</module>
 		<module>lab-kie-services</module>
-		<module>kie-testing</module>
-		<module>lab-kie-test</module>
+		<module>lab-camel-services</module>
 	</modules>
 
 	<properties>

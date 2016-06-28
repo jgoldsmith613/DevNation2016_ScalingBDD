@@ -40,6 +40,7 @@ import com.rhc.lab.domain.PerformanceType;
 import com.rhc.lab.domain.Performer;
 import com.rhc.lab.domain.Venue;
 
+@Ignore
 @SuppressWarnings("deprecation")
 @RunWith(CamelSpringJUnit4ClassRunner.class)
 @BootstrapWith(CamelTestContextBootstrapper.class)
