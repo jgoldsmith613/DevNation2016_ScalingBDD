@@ -13,4 +13,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<beans profile="openshift">
 		<import resource="classpath:mongodb-openshift-context.xml" />
 	</beans>
+	<beans profile="test">
+		<import resource="classpath:testRepositories.xml"/>
+	</beans>
 </beans>

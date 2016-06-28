@@ -1,28 +1,44 @@
 package rules;
 import com.rhc.lab.domain.BookingRequest;
+import com.rhc.lab.domain.BookingResponse;
 import com.rhc.lab.domain.Booking;
-import com.rhc.lab.domain.BookingStatus;
 import com.rhc.lab.domain.Venue;
 import java.util.Date;
 
 dialect "java"
 
+rule "Object inserted"
+ruleflow-group "validate"
+when
+	Object()
+then
+	System.out.println("thar she blows");
+end
+
 // XXX-Instructions
 rule "Venue revokes requests with no open date"
 	ruleflow-group "validate"
 	when
+	$response : BookingResponse(status ==null || status == "")
 		$obj:BookingRequest(open == null)
 	then
-		insert(BookingStatus.REVOKED);
+				modify($response){
+		setStatus("REVOKED"),
+		getBookingStatus().add("REVOKED");
+		};
 		
 end
 
 rule "Venue revokes requests with no close date"
 	ruleflow-group "validate"
 	when
+	$response : BookingResponse(status ==null)
 		$obj:BookingRequest(close == null)
 	then
-		insert(BookingStatus.REVOKED);
+					modify($response){
+		setStatus("REVOKED"),
+		getBookingStatus().add("REVOKED");
+		};
 end
 
 rule "Create Booking from Booking Request"
@@ -37,10 +53,14 @@ end
 rule "Venue revokes unsuitable Performances"
 	ruleflow-group "validate"
 	when 
+	$response : BookingResponse(status ==null)
 		$bookingRequest: BookingRequest()
 		$venue: Venue(accomodations not contains $bookingRequest.performer.type)
 	then
-		insert(BookingStatus.REVOKED);
+						modify($response){
+		setStatus("REVOKED"),
+		getBookingStatus().add("REVOKED");
+		};
 end
 
 // XXX-Instructions
@@ -49,15 +69,18 @@ rule "Case 1 - Venue revokes requests for busy venues"
 	ruleflow-group "validate"
 	dialect "mvel"
 	when
-		
+		$response : BookingResponse(status ==null)
 		$bookingRequest: BookingRequest($venueName : venueName, $requestOpen : open, $requestClose : close)
 		Booking(
 					venueName == $venueName
-					, $requestOpen after open
-					, $requestOpen before close
+					, $requestOpen > open
+					, $requestOpen < close
 		)
-	then
-		insert(BookingStatus.REVOKED);
+	then				
+	modify($response){
+		setStatus("REVOKED"),
+		getBookingStatus().add("REVOKED");
+		};
 end
 
 // XXX-Instructions
@@ -65,24 +88,65 @@ rule "Case 2 - Venue revokes requests for busy venues"
 	ruleflow-group "validate"
 	dialect "mvel"
 	when
-		
+		$response : BookingResponse(status ==null)
 		$bookingRequest: BookingRequest($venueName : venueName, $requestOpen : open, $requestClose : close)
 		Booking(
 					venueName == $venueName
-					, $requestClose after open
-					, $requestClose before close
+					, $requestClose > open
+					, $requestClose < close
 		)
 	then
-		insert(BookingStatus.REVOKED);
+		modify($response){
+		setStatus("REVOKED"),
+		getBookingStatus().add("REVOKED");
+		};
 end
 
-// XXX-Instructions
-rule "Confirm booking if all validations pass"
-	ruleflow-group "confirm"
-	when 
-		 not (exists (BookingStatus()))
+//rule "Return Confirmed if no errors"
+//ruleflow-group "confirm"
+//dialect "mvel"
+//when
+//	not BookingStatus()
+//then
+//	insert(BookingStatus.CONFIRMED);
+//end
+
+
+rule "Populate Requests"
+	ruleflow-group "populate repsonse"
+	when
+		$response : BookingResponse()
+		$request : BookingRequest()
 	then
-		insert(BookingStatus.CONFIRMED);
+		$response.getBookingRequests().add($request);
+		System.out.println("attempted to alter this");
+		
+end
+
+//rule "Populate Booking Status response Denied"
+//	ruleflow-group "populate response"
+//	when
+//		$response :  BookingResponse(status == null)
+//		$status : BookingStatus()
+//	then
+	//	modify($response){
+	//	setStatus("REVOKED"),
+	//	getBookingStatus().add("REVOKED");
+	//	};
+	//end
+	
+
+
+rule "Populate Booking Status on response confirmed"
+	ruleflow-group "populate response"
+	when 
+		$response : BookingResponse(status == null)
+		//not BookingStatus()
+	then
+		modify($response){
+			setStatus("CONFIRMED"),
+			getBookingStatus().add("CONFIRMED");
+		};
 end
 
 

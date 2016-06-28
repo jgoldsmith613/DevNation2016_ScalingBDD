@@ -4,8 +4,23 @@
 	xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util
 	 http://www.springframework.org/schema/util/spring-util.xsd">
 	
-	<bean id="localDecisionService" class="com.rhc.lab.kie.service.impl.LocalStatelessDecisionService">
+	<beans profile="local">
+	
+	<bean id="decisionService" class="com.rhc.lab.kie.service.impl.LocalStatelessDecisionService">
 		 <constructor-arg value="kbase"/>
 	</bean>
+	</beans>
+	
+		<beans profile="default">
+	
+	<bean id="decisionService" class="com.rhc.lab.kie.service.impl.LocalStatelessDecisionService">
+		 <constructor-arg value="kbase"/>
+	</bean>
+	</beans>
+	
+	
+	<beans profile="remote">
+		<bean id="decisionService" class="com.rhc.lab.kie.service.impl.RemoteExecutionService"/>
+	</beans>
 
 </beans>

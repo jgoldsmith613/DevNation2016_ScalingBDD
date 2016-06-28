@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule">
   <kbase name="kbase" packages="rules" default="true">
-        <ksession name="kession1" default="true"/>
+        <ksession name="kession1" default="true" type="stateless"/>
     </kbase>
 </kmodule>

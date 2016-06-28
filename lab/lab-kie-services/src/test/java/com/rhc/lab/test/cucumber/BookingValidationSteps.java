@@ -10,13 +10,12 @@ import javax.annotation.Resource;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
 import com.rhc.lab.domain.Booking;
 import com.rhc.lab.domain.BookingRequest;
 import com.rhc.lab.domain.BookingResponse;
-import com.rhc.lab.domain.BookingStatus;
-import com.rhc.lab.domain.PerformanceType;
 import com.rhc.lab.domain.Performer;
 import com.rhc.lab.domain.Venue;
 import com.rhc.lab.kie.api.StatelessDecisionService;
@@ -28,9 +27,10 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-@ContextConfiguration("classpath*:cucumber.xml")
+@ContextConfiguration({"classpath*:cucumber.xml", "classpath:kie-context.xml"})
+@ActiveProfiles({"remote", "test"})
 public class BookingValidationSteps {
-	@Resource(name = "localDecisionServiceBean")
+	@Resource(name = "decisionService")
 	private StatelessDecisionService decisionService;
 
 	protected static final Logger logger = LoggerFactory
@@ -69,8 +69,7 @@ public class BookingValidationSteps {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss");
 		Performer performer = new Performer();
 		performer.setName(performanceName);
-		performer
-				.setType(PerformanceType.valueOf(performanceType.toUpperCase()));
+		performer.setType(performanceType);
 
 		booking = new Booking();
 		booking.setPerformer(performer);
@@ -90,12 +89,12 @@ public class BookingValidationSteps {
 	@Given("^the venue accomodates performances by a$")
 	public void the_venue_accomodates_performances_by_a(List<String> artistTypes)
 			throws Throwable {
-		List<PerformanceType> accomodations = new ArrayList<PerformanceType>();
-		for (String artistType : artistTypes) {
-			accomodations.add(PerformanceType.valueOf(artistType));
-		}
+		// List<PerformanceType> accomodations = new ArrayList<String>();
+		// for (String artistType : artistTypes) {
+		// accomodations.add(PerformanceType.valueOf(artistType));
+		// }
 
-		venue.setAccomodations(accomodations);
+		venue.setAccomodations(artistTypes);
 
 		logger.info("And first step: " + artistTypes);
 
@@ -108,7 +107,7 @@ public class BookingValidationSteps {
 		Performer performer = new Performer();
 		performer.setName(artistName);
 		try {
-			performer.setType(PerformanceType.valueOf(type.toUpperCase()));
+			performer.setType(type);
 		} catch (Exception e) {
 			throw new Exception("Type '" + type + "' does not exist");
 		}
@@ -125,7 +124,7 @@ public class BookingValidationSteps {
 		Performer performer = new Performer();
 		performer.setName(artistName);
 		try {
-			performer.setType(PerformanceType.valueOf(type.toUpperCase()));
+			performer.setType(type);
 		} catch (Exception e) {
 			throw new Exception("Type '" + type + "' does not exist");
 		}
@@ -144,12 +143,13 @@ public class BookingValidationSteps {
 	@Then("^the booking should be \"(.*?)\"$")
 	public void the_booking_should_be(String bookingStatus) throws Throwable {
 		// XXX-Instructions
-
+		logger.info("expected : " + response);
 		if (response.getBookingStatus() != null
 				&& !response.getBookingStatus().isEmpty()) {
-			BookingStatus status = response.getBookingStatus().iterator()
-					.next();
-			Assert.assertTrue(bookingStatus.equalsIgnoreCase(status.toString()));
+
+			Assert.assertTrue("Expected : " + bookingStatus + " , Got : "
+					+ response.getBookingStatus(), response.getBookingStatus()
+					.contains(bookingStatus));
 		} else {
 			Assert.fail("No booking status returned from the knowledge session.");
 		}
@@ -160,9 +160,12 @@ public class BookingValidationSteps {
 	public void validating_the_booking() throws Throwable {
 		// Run rules
 		facts = buildSession(request);
-		response = decisionService.execute(facts, processId,
+		Object response = decisionService.execute(facts, processId,
 				BookingResponse.class);
-		saveBooking(response);
+		System.out.println(response.toString());
+		Assert.assertTrue(response.getClass() == BookingResponse.class);
+		saveBooking((BookingResponse) response);
+		this.response = (BookingResponse) response;
 
 		logger.info("When step");
 	}
@@ -190,15 +193,25 @@ public class BookingValidationSteps {
 		Booking booking = response.generateBooking();
 		try {
 			// attempting to save the bookings returned
-			if (response.getBookingStatus().iterator().next() == BookingStatus.CONFIRMED) {
+			if (response.getBookingStatus().iterator().hasNext()) {
+				if (response.getBookingStatus().contains("Confirmed")) {
 
-				logger.info("Attempting to save booking: " + booking.toString());
-				bookingRepo.save(booking);
+					logger.info("Attempting to save booking: "
+							+ booking.toString());
+					bookingRepo.save(booking);
+				}
 			}
 		} catch (Exception e) {
 			logger.error(e.toString());
+			e.printStackTrace();
 			return false;
 		}
 		return true;
+	}
+
+	@Then("^wait (\\d+) ms$")
+	public void wait_ms(int arg1) throws Throwable {
+		// Write code here that turns the phrase above into concrete actions
+		Thread.sleep(arg1 * 3);
 	}
 }

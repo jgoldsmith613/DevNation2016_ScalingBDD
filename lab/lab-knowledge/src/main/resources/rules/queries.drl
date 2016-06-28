@@ -2,7 +2,6 @@ package rules;
 
 import com.rhc.lab.domain.Booking;
 import com.rhc.lab.domain.BookingRequest;
-import com.rhc.lab.domain.BookingStatus;
 
 query "getBookingRequests"
 	
@@ -13,11 +12,5 @@ end
 query "getBookings"
 	
 	$booking : Booking()
-	
-end
-
-query "getStatus"
-	
-	$status : BookingStatus()
 	
 end

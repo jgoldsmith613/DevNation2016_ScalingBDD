@@ -16,12 +16,12 @@ public class Performer implements Serializable {
 
 	private String name;
 	private String description;
-	private PerformanceType type;
+	private String type;
 
 	public Performer() {
 	};
 
-	public Performer(String name, String description, PerformanceType type) {
+	public Performer(String name, String description, String type) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -44,11 +44,11 @@ public class Performer implements Serializable {
 		this.description = description;
 	}
 
-	public PerformanceType getType() {
+	public String getType() {
 		return type;
 	}
 
-	public void setType(PerformanceType type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 

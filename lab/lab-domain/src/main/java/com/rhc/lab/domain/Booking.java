@@ -3,9 +3,6 @@ package com.rhc.lab.domain;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
@@ -14,12 +11,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * the lab business rules
  * 
  */
-@Document(collection = "bookings")
+// @Document(collection = "bookings")
 public class Booking implements Serializable, Comparable<Booking> {
 
 	private static final long serialVersionUID = -3194593190599248428L;
 
-	@Id
+	// @Id
 	private String id;
 	private String venueName;
 	private Performer performer;

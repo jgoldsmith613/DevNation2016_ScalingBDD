@@ -20,7 +20,6 @@ import com.rhc.lab.dao.VenueRepository;
 import com.rhc.lab.domain.Booking;
 import com.rhc.lab.domain.BookingRequest;
 import com.rhc.lab.domain.BookingResponse;
-import com.rhc.lab.domain.BookingStatus;
 import com.rhc.lab.domain.PerformanceType;
 import com.rhc.lab.domain.Venue;
 import com.rhc.lab.service.BookingRequestService;
@@ -88,7 +87,8 @@ public class BookingRequestServiceImpl implements BookingRequestService {
 		Booking booking = response.generateBooking();
 		try {
 			// attempting to save the bookings returned
-			if (response.getBookingStatus().iterator().next() == BookingStatus.CONFIRMED) {
+			if (response.getBookingStatus().iterator().next()
+					.equalsIgnoreCase("CONFRIMED")) {
 
 				logger.info("Attempting to save booking: " + booking.toString());
 				booking = bookingRepo.save(booking);

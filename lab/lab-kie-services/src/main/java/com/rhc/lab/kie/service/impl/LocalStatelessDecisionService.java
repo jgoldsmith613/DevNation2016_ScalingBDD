@@ -18,6 +18,7 @@ import org.kie.api.runtime.StatelessKieSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.rhc.lab.domain.BookingResponse;
 import com.rhc.lab.kie.api.StatelessDecisionService;
 import com.rhc.lab.kie.common.QueryUtils;
 import com.rhc.lab.kie.common.ReflectiveExecutionResultsTransformer;
@@ -96,6 +97,8 @@ public class LocalStatelessDecisionService implements StatelessDecisionService {
 		if (processId != null && !processId.isEmpty()) {
 			commands.add(commandFactory.newStartProcess(processId));
 		}
+		commands.add(commandFactory.newInsert(new BookingResponse(),
+				"response", true, null));
 
 		commands.add(commandFactory.newFireAllRules());
 

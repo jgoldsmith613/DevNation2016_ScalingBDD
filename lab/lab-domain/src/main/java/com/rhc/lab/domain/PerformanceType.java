@@ -2,6 +2,8 @@ package com.rhc.lab.domain;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * 
  * This enumerated type represents the domain model for performance types to be
@@ -17,12 +19,14 @@ public enum PerformanceType
 			"Orchestra"), PLAY("Play"), RALLY("Rally"), SCREENING(
 			"Film Screening"), SPORTING_EVENT("Sporting Event");
 
+	@JsonProperty("label")
 	private String label;
 
 	PerformanceType(String performanceType) {
 		this.label = performanceType;
 	}
 
+	@Override
 	public String toString() {
 		return label;
 	}

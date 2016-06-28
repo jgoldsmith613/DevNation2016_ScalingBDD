@@ -4,34 +4,30 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.util.StringUtils;
-
 /**
  * 
  * This class represents the domain model for a Concert Venue
  * 
  */
-@Document(collection = "venues")
-public class Venue implements Serializable, Comparable<Venue> {
+// @Document(collection = "venues")
+public class Venue implements Serializable {
 	/**
    * 
    */
 	private static final long serialVersionUID = -6165217833968313884L;
 
-	@Id
+	// @Id
 	private String id;
 	private String name;
 	private String city;
 	private Integer capacity;
-	private List<PerformanceType> accomodations;
+	private List<String> accomodations;
 
 	public Venue() {
 	}
 
 	public Venue(String name, String city, Integer capacity,
-			List<PerformanceType> accomodations) {
+			List<String> accomodations) {
 		super();
 		this.name = name;
 		this.city = city;
@@ -40,13 +36,13 @@ public class Venue implements Serializable, Comparable<Venue> {
 	}
 
 	public Venue(String name, String city, Integer capacity,
-			PerformanceType... accomodations) {
+			String... accomodations) {
 		super();
 		this.name = name;
 		this.city = city;
 		this.capacity = capacity;
-		this.accomodations = new ArrayList<PerformanceType>();
-		for (PerformanceType type : accomodations) {
+		this.accomodations = new ArrayList<String>();
+		for (String type : accomodations) {
 			this.accomodations.add(type);
 		}
 	}
@@ -83,11 +79,11 @@ public class Venue implements Serializable, Comparable<Venue> {
 		this.capacity = capacity;
 	}
 
-	public List<PerformanceType> getAccomodations() {
+	public List<String> getAccomodations() {
 		return accomodations;
 	}
 
-	public void setAccomodations(List<PerformanceType> accomodations) {
+	public void setAccomodations(List<String> accomodations) {
 		this.accomodations = accomodations;
 	}
 
@@ -98,23 +94,23 @@ public class Venue implements Serializable, Comparable<Venue> {
 	/**
 	 * Cleans up the leading "The" in band name for more accurate sorting
 	 */
-	@Override
-	public int compareTo(Venue o) {
-		String thisName = "";
-		String otherName = "";
-
-		if (StringUtils.startsWithIgnoreCase(this.getName(), "the")) {
-			thisName = this.getName().substring(3).trim();
-		} else {
-			thisName = this.getName();
-		}
-		if (StringUtils.startsWithIgnoreCase(o.getName(), "the")) {
-			otherName = o.getName().substring(3).trim();
-		} else {
-			otherName = o.getName();
-		}
-
-		return thisName.compareTo(otherName);
-	}
+	// @Override
+	// public int compareTo(Venue o) {
+	// String thisName = "";
+	// String otherName = "";
+	//
+	// if (StringUtils.startsWithIgnoreCase(this.getName(), "the")) {
+	// thisName = this.getName().substring(3).trim();
+	// } else {
+	// thisName = this.getName();
+	// }
+	// if (StringUtils.startsWithIgnoreCase(o.getName(), "the")) {
+	// otherName = o.getName().substring(3).trim();
+	// } else {
+	// otherName = o.getName();
+	// }
+	//
+	// return thisName.compareTo(otherName);
+	// }
 
 }

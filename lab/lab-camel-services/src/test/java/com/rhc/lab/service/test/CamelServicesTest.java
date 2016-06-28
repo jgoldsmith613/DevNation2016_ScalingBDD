@@ -44,7 +44,7 @@ import com.rhc.lab.domain.Venue;
 @SuppressWarnings("deprecation")
 @RunWith(CamelSpringJUnit4ClassRunner.class)
 @BootstrapWith(CamelTestContextBootstrapper.class)
-@ActiveProfiles("test")
+@ActiveProfiles({ "test", "remote" })
 @ContextConfiguration(locations = {"classpath:camel-context.xml"})
 public class CamelServicesTest {
 
@@ -68,15 +68,15 @@ public class CamelServicesTest {
 	protected ProducerTemplate template1;
 
 	Performer performer1 = new Performer("The Doors", "a band",
-			PerformanceType.BAND);
+			PerformanceType.BAND.name());
 	Performer performer2 = new Performer("New York City Ballet",
-			"fancy dancers", PerformanceType.BALLET);
+			"fancy dancers", PerformanceType.BALLET.name());
 
 	Venue venue1 = new Venue("Madison Square Garden", "New York City", 10000,
-			PerformanceType.BAND, PerformanceType.COMIC,
-			PerformanceType.ORCHESTRA);
+			PerformanceType.BAND.name(), PerformanceType.COMIC.name(),
+			PerformanceType.ORCHESTRA.name());
 	Venue venue2 = new Venue("Lincoln Square", "New York City", 5000,
-			PerformanceType.BALLET);
+			PerformanceType.BALLET.name());
 
 	BookingRequest request1 = new BookingRequest(venue1.getName(),
 			Date.valueOf("2016-06-01"), Date.valueOf("2016-06-02"), performer1);
