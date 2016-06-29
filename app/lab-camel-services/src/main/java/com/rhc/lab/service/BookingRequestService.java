@@ -101,4 +101,8 @@ public interface BookingRequestService {
 	 */
 	public Map<String, String> getPerformanceTypes();
 
+	public String deleteAllBookings();
+
+	public String deleteAllVenues();
+
 }
