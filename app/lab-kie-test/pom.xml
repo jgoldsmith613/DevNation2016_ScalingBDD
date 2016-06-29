@@ -121,7 +121,7 @@
 								<exclude>**/*Test.java</exclude>
 							</excludes>
 							<includes>
-								<include>RunRemoteRulesTest.java</include>
+								<include>**/RemoteRulesRunner.java</include>
 							</includes>
 						</configuration>
 					</plugin>
