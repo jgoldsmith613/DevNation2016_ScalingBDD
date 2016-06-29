@@ -44,18 +44,6 @@ node {
                 """
                 stash includes: 'app/lab-kie-test/target/cucumber.json', name: 'groupC'
             }
-        }, 'group D':{
-            node{ 
-                def mvnHome = tool 'maven'
-                def WORKSPACE = pwd()
-                git url: 'https://github.com/jgoldsmith613/DevNation2016_ScalingBDD.git'
-                sh """ 
-                    cd app/lab-kie-test
-                    ${mvnHome}/bin/mvn clean install -PoverloadSplit -Drunner.name=D -Dmaven.test.failure.ignore
-                    cd ${WORKSPACE}
-                """
-                stash includes: 'app/lab-kie-test/target/cucumber.json', name: 'groupD'
-            }
         }
         
     stage 'Aggregate Reports'
@@ -68,7 +56,6 @@ node {
             mkdir cucumber/groupA
             mkdir cucumber/groupB
 	    mkdir cucumber/groupC
-	    mkdir cucumber/groupD
         """
         unstash 'groupA'
         
@@ -82,10 +69,6 @@ node {
 
         sh 'mv app/lab-kie-test/target/cucumber.json cucumber/groupC/cucumber.json'
        
-        unstash 'groupD'
-
-        sh 'mv app/lab-kie-test/target/cucumber.json cucumber/groupD/cucumber.json'
-
         step([$class: 'CukedoctorPublisher', featuresDir: 'cucumber', numbered: true, sectAnchors: true, toc: 'RIGHT', format: 'HTML', title: 'Living Documentation Parallelization'])
 
     stage 'production deploy'

@@ -1,0 +1,14 @@
+{
+  "name": "ace-bookings",
+  "version": "0.0.0",
+  "description": "Simple Node Web Server",
+  "main": "app.js",
+  "author": "jburliso",
+  "dependencies": {
+    "body-parser": "^1.4.3",
+    "express": "^4.13.4",
+    "method-override": "^2.1.3",
+    "morgan": "^1.7.0",
+    "nodemon": "^1.9.2"
+  }
+}
