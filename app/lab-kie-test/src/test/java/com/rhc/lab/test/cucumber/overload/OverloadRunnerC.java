@@ -10,7 +10,7 @@ import cucumber.api.junit.Cucumber;
 @RunWith(Cucumber.class)
 @ActiveProfiles("local")
 @ContextConfiguration("kie-context.xml")
-@CucumberOptions(features = "classpath:features/", plugin = {"html:target/cucumber"}, tags = {
+@CucumberOptions(features = "classpath:features/", plugin = {"json:target/cucumber.json"}, tags = {
 		"~@Ignore", "~@not_implemented", "@Overload", "@C"}, glue = {"com.rhc.lab.test.cucumber.kie"})
 public class OverloadRunnerC {
 

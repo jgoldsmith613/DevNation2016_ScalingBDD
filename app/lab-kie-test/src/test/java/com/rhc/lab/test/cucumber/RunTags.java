@@ -7,7 +7,7 @@ import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(features = "classpath:features/", plugin = {"pretty",
-		"html:target/cucumber"}, tags = {"@wip", "~@Ignore",
+		"json:target/cucumber.json"}, tags = {"@wip", "~@Ignore",
 		"~@not_implemented"}, glue = {"com.rhc"})
 public class RunTags {
 
