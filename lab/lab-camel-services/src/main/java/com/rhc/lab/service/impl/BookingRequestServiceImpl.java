@@ -229,4 +229,16 @@ public class BookingRequestServiceImpl implements BookingRequestService {
 		return types;
 	}
 
+	@Override
+	public String deleteAllBookings() {
+		bookingRepo.deleteAll();
+		return "All bookings deleted";
+	}
+
+	@Override
+	public String deleteAllVenues() {
+		venueRepo.deleteAll();
+		return "All venues deleted";
+	}
+
 }

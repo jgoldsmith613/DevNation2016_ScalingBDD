@@ -1,7 +1,11 @@
+@Camel @Rules
 Feature: Book Artists at Venues
   Requests should have a valid opening time and closing time
   Venues should not allow two bookings in the same time slot
   Venues should not allow a booking with a performance it cannot accomodate
+ 
+ Background:
+  	Given all respositories are clear
 
   # XXX-Instructions
   @wip
@@ -10,6 +14,7 @@ Feature: Book Artists at Venues
     And the venue accomodates performances by a
       | COMIC |
       | BAND  |
+    And the venue is saved 
     And a request for a "COMIC" performance by "Aziz Ansari"
     When validating the booking
     Then the booking should be "REVOKED"
@@ -19,6 +24,7 @@ Feature: Book Artists at Venues
     And the venue accomodates performances by a
       | BAND      |
       | ORCHESTRA |
+    And the venue is saved 
     And an existing "BAND" performance by "The Clash" from "01-01-2016 01:00:00" to "01-01-2016 02:00:00"
     And a dated request for a "ORCHESTRA" performance by "The Brooklyn Symphony ORCHESTRA" from "01-01-2016 01:30:00" to "01-01-2016 02:30:00"
     When validating the booking
@@ -30,6 +36,7 @@ Feature: Book Artists at Venues
     And the venue accomodates performances by a
       | BAND      |
       | ORCHESTRA |
+          And the venue is saved 
     And an existing "BAND" performance by "The Clash" from "01-01-2016 01:00:00" to "01-01-2016 02:00:00"
     And a dated request for a "ORCHESTRA" performance by "The Brooklyn Symphony ORCHESTRA" from "01-01-2016 02:00:00" to "01-01-2016 03:00:00"
     When validating the booking
@@ -40,6 +47,7 @@ Feature: Book Artists at Venues
     And the venue accomodates performances by a
       | BAND  |
       | COMIC |
+          And the venue is saved 
     And a dated request for a "BAND" performance by "The Clash" from "01-01-2016 02:00:00" to "01-01-2016 03:00:00"
     When validating the booking
     Then the booking should be "CONFIRMED"
@@ -49,6 +57,7 @@ Feature: Book Artists at Venues
     And the venue accomodates performances by a
       | BAND |
       | COMIC |
+          And the venue is saved 
     And a dated request for a "ORCHESTRA" performance by "The Brooklyn Symphony ORCHESTRA" from "01-01-2016 02:00:00" to "01-01-2016 03:00:00"
     When validating the booking
     Then the booking should be "REVOKED"

@@ -1,7 +1,6 @@
-package com.rhc.lab.test.cucumber;
+package com.rhc.lab.test.cucumber.camel;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,14 +12,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rhc.lab.domain.Booking;
 import com.rhc.lab.domain.BookingRequest;
-import com.rhc.lab.domain.BookingResponse;
 import com.rhc.lab.domain.Performer;
 import com.rhc.lab.domain.Venue;
 import com.rhc.lab.kie.api.StatelessDecisionService;
-import com.rhc.lab.test.repository.BookingCucumberRepository;
-import com.rhc.lab.test.repository.VenueCucumberRepository;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -29,22 +31,29 @@ import cucumber.api.java.en.When;
 
 @ContextConfiguration({"classpath*:cucumber.xml", "classpath:kie-context.xml"})
 @ActiveProfiles({"remote", "test"})
-public class BookingValidationSteps {
+public class CamelBookingValidationSteps {
 	@Resource(name = "decisionService")
 	private StatelessDecisionService decisionService;
 
+	public static final MediaType JSON = MediaType
+			.parse("application/json; charset=utf-8");
+
 	protected static final Logger logger = LoggerFactory
-			.getLogger(BookingValidationSteps.class);
+			.getLogger(CamelBookingValidationSteps.class);
 
-	protected VenueCucumberRepository venueRepo = new VenueCucumberRepository();
-	protected BookingCucumberRepository bookingRepo = new BookingCucumberRepository();
 	protected Venue venue = new Venue();
-	protected Booking booking = new Booking();
 	protected BookingRequest request = new BookingRequest();
-	protected BookingResponse response = new BookingResponse();
-	protected List<Object> facts;
 
-	protected static final String processId = "bookingProcess";
+	private OkHttpClient client = new OkHttpClient();
+
+	private ObjectMapper mapper = new ObjectMapper();
+
+	private static String serverUrl = "http://localhost:8081";
+
+	private static String bookingPath = "/bookings";
+	private static String venuePath = "/venues";
+	private static Response restResponse;
+
 
 	@Given("^a venue \"(.*?)\" with an occupancy of \"(.*?)\"$")
 	public void a_venue_with_an_occupancy_of(String venueName, String occupancy)
@@ -52,12 +61,6 @@ public class BookingValidationSteps {
 		// Set properties regarding venueName/occupancy
 		venue.setName(venueName);
 		venue.setCapacity(Integer.parseInt(occupancy));
-
-		// (Test repo-maps) Add venue to venueRepo
-		if (venueRepo.findByName(venueName).isEmpty()) {
-			venueRepo.save(venue);
-		}
-
 		request.setVenueName(venueName);
 
 		logger.info("Given step: " + venueName + " " + occupancy);
@@ -71,7 +74,7 @@ public class BookingValidationSteps {
 		performer.setName(performanceName);
 		performer.setType(performanceType);
 
-		booking = new Booking();
+		Booking booking = new Booking();
 		booking.setPerformer(performer);
 		Date dOpen = sdf.parse(open);
 		Date dClose = sdf.parse(close);
@@ -82,7 +85,18 @@ public class BookingValidationSteps {
 		booking.setVenueName(venue.getName());
 
 		logger.info("saving previous booking " + booking.toString());
-		bookingRepo.save(booking);
+		// bookingRepo.save(booking);
+
+		BookingRequest request = new BookingRequest(venue.getName(), dOpen,
+				dClose, performer);
+		String requestString = mapper.writeValueAsString(request);
+		logger.info("" + requestString);
+		RequestBody body = RequestBody.create(JSON, requestString);
+		Request restRequest = new Request.Builder()
+				.url(serverUrl + bookingPath).post(body).build();
+		Response response = client.newCall(restRequest).execute();
+		Assert.assertEquals(response.code(), 200);
+		// restResponse = response;
 
 	}
 
@@ -142,83 +156,86 @@ public class BookingValidationSteps {
 
 	@Then("^the booking should be \"(.*?)\"$")
 	public void the_booking_should_be(String bookingStatus) throws Throwable {
-		// XXX-Instructions
-		logger.info("expected : " + response);
-		if (response.getBookingStatus() != null
-				&& !response.getBookingStatus().isEmpty()) {
 
-			Assert.assertTrue("Expected : " + bookingStatus + " , Got : "
-					+ response.getBookingStatus(), response.getBookingStatus()
-					.contains(bookingStatus));
-		} else {
-			Assert.fail("No booking status returned from the knowledge session.");
+		if (bookingStatus.equalsIgnoreCase("Confirmed")) {
+			i_expect_a_confirmed_request();
 		}
 
+		if (bookingStatus.equalsIgnoreCase("Revoked")) {
+			i_expect_a_denied_request();
+		}
 	}
 
 	@When("^validating the booking$")
 	public void validating_the_booking() throws Throwable {
 		// Run rules
-		facts = buildSession(request);
-		Object response = decisionService.execute(facts, processId,
-				BookingResponse.class);
-		System.out.println(response.toString());
-		Assert.assertTrue(response.getClass() == BookingResponse.class);
-		this.response = (BookingResponse) response;
-		Assert.assertNotNull("Requests not attached",
-				this.response.getBookingRequests());
-		Assert.assertFalse("Requests empty", this.response.getBookingRequests()
-				.isEmpty());
-		System.out.println("" + this.response.getBookingRequests().size());
-		System.out.println(""
-				+ this.response.getBookingRequests().iterator().next());
-		saveBooking(this.response);
+		String requestString = mapper.writeValueAsString(request);
+		logger.info("" + requestString);
+		RequestBody body = RequestBody.create(JSON, requestString);
+		Request request = new Request.Builder().url(serverUrl + bookingPath)
+				.post(body).build();
+		Response response = client.newCall(request).execute();
+		restResponse = response;
 
-		logger.info("When step");
 	}
 
-	private List<Object> buildSession(BookingRequest request) {
-		logger.info("collect venue: " + request.getVenueName());
-		List<Venue> venue = venueRepo.findByName(request.getVenueName());
 
-		logger.info("venue found:" + venue);
-		List<Booking> bookings = bookingRepo.findByVenueName(request
-				.getVenueName());
-
-		List<Object> facts = new ArrayList<Object>();
-		facts.addAll(venue);
-		facts.addAll(bookings);
-		facts.add(request);
-		return facts;
-	}
-
-	private boolean saveBooking(BookingResponse response) {
-
-		// Attempt to implement logger
-		logger.info("Session returned: " + response.toString());
-
-		Booking booking = response.generateBooking();
-		try {
-			// attempting to save the bookings returned
-			if (response.getBookingStatus().iterator().hasNext()) {
-				if (response.getBookingStatus().contains("Confirmed")) {
-
-					logger.info("Attempting to save booking: "
-							+ booking.toString());
-					bookingRepo.save(booking);
-				}
-			}
-		} catch (Exception e) {
-			logger.error(e.toString());
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
 
 	@Then("^wait (\\d+) ms$")
 	public void wait_ms(int arg1) throws Throwable {
 		// Write code here that turns the phrase above into concrete actions
 		Thread.sleep(arg1 * 3);
+	}
+
+	@When("^request to schedule the booking$")
+	public void request_to_schedule_the_booking() throws Throwable {
+		String requestString = mapper.writeValueAsString(request);
+		logger.info("" + requestString);
+		RequestBody body = RequestBody.create(JSON, requestString);
+		Request request = new Request.Builder().url(serverUrl + bookingPath)
+				.post(body).build();
+		Response response = client.newCall(request).execute();
+		restResponse = response;
+
+	}
+
+	@Then("^I expect a denied request$")
+	public void i_expect_a_denied_request() throws Throwable {
+		// Write code here that turns the phrase above into concrete actions
+		Assert.assertEquals(417, restResponse.code());
+	}
+
+	@Then("^I expect a confirmed request$")
+	public void i_expect_a_confirmed_request() throws Throwable {
+		// Write code here that turns the phrase above into concrete actions
+		Assert.assertEquals(200, restResponse.code());
+		Assert.assertNotNull(restResponse.body().string());
+	}
+
+	@Given("^the venue is saved$")
+	public void the_venue_is_saved() throws Throwable {
+		String venueString = mapper.writeValueAsString(venue);
+		RequestBody body = RequestBody.create(JSON, venueString);
+		Request request = new Request.Builder().url(serverUrl + venuePath)
+				.post(body).build();
+		Response response = client.newCall(request).execute();
+		venue.setId(response.body().string());
+
+	}
+
+	@Given("^all respositories are clear$")
+	public void all_respositories_are_clear() throws Throwable {
+		Request request = new Request.Builder().url(serverUrl + bookingPath)
+				.delete().build();
+		Response response = client.newCall(request).execute();
+		System.out.println(response.body());
+		Assert.assertEquals("\"All bookings deleted\"", response.body()
+				.string());
+
+		request = new Request.Builder().url(serverUrl + venuePath).delete()
+				.build();
+		response = client.newCall(request).execute();
+		Assert.assertEquals("\"All venues deleted\"", response.body().string());
+
 	}
 }
