@@ -1,5 +1,6 @@
 package com.rhc.lab.route;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 import org.apache.camel.Exchange;
@@ -21,10 +22,23 @@ public class LabRouteBuilder extends RouteBuilder {
 	@Resource(name = "decisionService")
 	StatelessDecisionService localDecisionService;
 
+	private static String host = "localhost";
+	private static String port = "8081";
+
+	@PostConstruct
+	public void setProperties() {
+		if (System.getProperty("camel.war.host") != null) {
+			host = System.getProperty("camel.war.host");
+		}
+		if (System.getProperty("camel.war.port") != null) {
+			port = System.getProperty("camel.war.port");
+		}
+	}
+
 	@Override
 	public void configure() throws Exception {
 
-		restConfiguration().component("jetty").host("localhost").port("8081")
+		restConfiguration().component("jetty").host(host).port(port)
 				.enableCORS(true).bindingMode(RestBindingMode.json);
 
 		rest("/bookings")
