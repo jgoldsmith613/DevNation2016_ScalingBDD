@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 import org.junit.Assert;
@@ -48,11 +49,22 @@ public class CamelBookingValidationSteps {
 
 	private ObjectMapper mapper = new ObjectMapper();
 
-	private static String serverUrl = "http://localhost:8081";
+	private static String serverHost = "http://localhost";
+	private static String serverPort = ":8081";
 
 	private static String bookingPath = "/bookings";
 	private static String venuePath = "/venues";
 	private static Response restResponse;
+
+	@PostConstruct
+	private void setUpProperties() {
+		if (System.getProperty("camel.war.host") != null) {
+			serverHost = System.getProperty("camel.war.host");
+		}
+		if (System.getProperty("camel.war.port") != null) {
+			serverPort = ":" + System.getProperty("camel.war.port");
+		}
+	}
 
 	@Given("^a venue \"(.*?)\" with an occupancy of \"(.*?)\"$")
 	public void a_venue_with_an_occupancy_of(String venueName, String occupancy)
@@ -92,7 +104,7 @@ public class CamelBookingValidationSteps {
 		logger.info("" + requestString);
 		RequestBody body = RequestBody.create(JSON, requestString);
 		Request restRequest = new Request.Builder()
-				.url(serverUrl + bookingPath).post(body).build();
+				.url(serverHost + serverPort + bookingPath).post(body).build();
 		Response response = client.newCall(restRequest).execute();
 		Assert.assertEquals(response.code(), 200);
 		// restResponse = response;
@@ -171,8 +183,8 @@ public class CamelBookingValidationSteps {
 		String requestString = mapper.writeValueAsString(request);
 		logger.info("" + requestString);
 		RequestBody body = RequestBody.create(JSON, requestString);
-		Request request = new Request.Builder().url(serverUrl + bookingPath)
-				.post(body).build();
+		Request request = new Request.Builder()
+				.url(serverHost + serverPort + bookingPath).post(body).build();
 		Response response = client.newCall(request).execute();
 		restResponse = response;
 
@@ -189,8 +201,8 @@ public class CamelBookingValidationSteps {
 		String requestString = mapper.writeValueAsString(request);
 		logger.info("" + requestString);
 		RequestBody body = RequestBody.create(JSON, requestString);
-		Request request = new Request.Builder().url(serverUrl + bookingPath)
-				.post(body).build();
+		Request request = new Request.Builder()
+				.url(serverHost + serverPort + bookingPath).post(body).build();
 		Response response = client.newCall(request).execute();
 		restResponse = response;
 
@@ -213,8 +225,8 @@ public class CamelBookingValidationSteps {
 	public void the_venue_is_saved() throws Throwable {
 		String venueString = mapper.writeValueAsString(venue);
 		RequestBody body = RequestBody.create(JSON, venueString);
-		Request request = new Request.Builder().url(serverUrl + venuePath)
-				.post(body).build();
+		Request request = new Request.Builder()
+				.url(serverHost + serverPort + venuePath).post(body).build();
 		Response response = client.newCall(request).execute();
 		venue.setId(response.body().string());
 
@@ -222,15 +234,15 @@ public class CamelBookingValidationSteps {
 
 	@Given("^all respositories are clear$")
 	public void all_respositories_are_clear() throws Throwable {
-		Request request = new Request.Builder().url(serverUrl + bookingPath)
-				.delete().build();
+		Request request = new Request.Builder()
+				.url(serverHost + serverPort + bookingPath).delete().build();
 		Response response = client.newCall(request).execute();
 		System.out.println(response.body());
 		Assert.assertEquals("\"All bookings deleted\"", response.body()
 				.string());
 
-		request = new Request.Builder().url(serverUrl + venuePath).delete()
-				.build();
+		request = new Request.Builder()
+				.url(serverHost + serverPort + venuePath).delete().build();
 		response = client.newCall(request).execute();
 		Assert.assertEquals("\"All venues deleted\"", response.body().string());
 
