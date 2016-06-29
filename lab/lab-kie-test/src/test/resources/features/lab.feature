@@ -8,7 +8,6 @@ Feature: Book Artists at Venues
   	Given all respositories are clear
 
   # XXX-Instructions
-  @wip
   Scenario: Deny a BAND to play with no opening time or closing time specified
     Given a venue "The Cellar" with an occupancy of "200"
     And the venue accomodates performances by a
@@ -30,13 +29,12 @@ Feature: Book Artists at Venues
     When validating the booking
     Then the booking should be "REVOKED"
 
-	@wip
   Scenario: Allow a BAND to play an open timeslot
     Given a venue "The Cellar" with an occupancy of "200"
     And the venue accomodates performances by a
       | BAND      |
       | ORCHESTRA |
-          And the venue is saved 
+    And the venue is saved 
     And an existing "BAND" performance by "The Clash" from "01-01-2016 01:00:00" to "01-01-2016 02:00:00"
     And a dated request for a "ORCHESTRA" performance by "The Brooklyn Symphony ORCHESTRA" from "01-01-2016 02:00:00" to "01-01-2016 03:00:00"
     When validating the booking
@@ -47,7 +45,7 @@ Feature: Book Artists at Venues
     And the venue accomodates performances by a
       | BAND  |
       | COMIC |
-          And the venue is saved 
+    And the venue is saved 
     And a dated request for a "BAND" performance by "The Clash" from "01-01-2016 02:00:00" to "01-01-2016 03:00:00"
     When validating the booking
     Then the booking should be "CONFIRMED"
@@ -57,7 +55,7 @@ Feature: Book Artists at Venues
     And the venue accomodates performances by a
       | BAND |
       | COMIC |
-          And the venue is saved 
+    And the venue is saved 
     And a dated request for a "ORCHESTRA" performance by "The Brooklyn Symphony ORCHESTRA" from "01-01-2016 02:00:00" to "01-01-2016 03:00:00"
     When validating the booking
     Then the booking should be "REVOKED"
