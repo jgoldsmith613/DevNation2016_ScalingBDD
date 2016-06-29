@@ -1,0 +1,28 @@
+node {
+    
+    stage 'checkout'
+	sh 'sleep 1'
+    stage 'maven build'
+	sh 'sleep 20'
+    stage 'development deploy'
+	sh 'sleep 20' 
+    stage 'acceptence tests'
+    
+        def mvnHome = tool 'maven'
+        def WORKSPACE = pwd()
+        git url: 'https://github.com/jgoldsmith613/DevNation2016_ScalingBDD.git'
+        sh """
+            cd app/lab-kie-test
+            ${mvnHome}/bin/mvn clean install -Poverload -Dmaven.test.failure.ignore 
+            cd ${WORKSPACE}
+        """
+
+        step([$class: 'CukedoctorPublisher', featuresDir: 'app/lab-kie-test/target', numbered: true, sectAnchors: true, toc: 'RIGHT', format: 'HTML', title: 'Living Documentation split 2'])
+
+    stage 'production deploy'
+	
+        input "Deploy Application to Production?"
+	sh 'sleep 10'
+
+   
+}
