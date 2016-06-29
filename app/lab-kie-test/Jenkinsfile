@@ -15,7 +15,7 @@ node {
                 git url: 'https://github.com/jgoldsmith613/DevNation2016_ScalingBDD.git'
                 sh """
                     cd app/lab-kie-test
-                    ${mvnHome}/bin/mvn clean install -PoverloadSplit -Drunner.name=A
+                    ${mvnHome}/bin/mvn clean install -PoverloadSplit -Drunner.name=A -Dmaven.test.failure.ignore
 		    cd ${WORKSPACE}
                 """
                 stash includes: 'app/lab-kie-test/target/cucumber.json', name: 'groupA'
@@ -27,7 +27,7 @@ node {
                 git url: 'https://github.com/jgoldsmith613/DevNation2016_ScalingBDD.git'
                 sh """ 
                     cd app/lab-kie-test
-                    ${mvnHome}/bin/mvn clean install -PoverloadSplit -Drunner.name=B
+                    ${mvnHome}/bin/mvn clean install -PoverloadSplit -Drunner.name=B -Dmaven.test.failure.ignore
                     cd ${WORKSPACE}
                 """
                 stash includes: 'app/lab-kie-test/target/cucumber.json', name: 'groupB'
@@ -39,7 +39,7 @@ node {
                 git url: 'https://github.com/jgoldsmith613/DevNation2016_ScalingBDD.git'
                 sh """ 
                     cd app/lab-kie-test
-                    ${mvnHome}/bin/mvn clean install -PoverloadSplit -Drunner.name=C
+                    ${mvnHome}/bin/mvn clean install -PoverloadSplit -Drunner.name=C -Dmaven.test.failure.ignore
                     cd ${WORKSPACE}
                 """
                 stash includes: 'app/lab-kie-test/target/cucumber.json', name: 'groupC'
@@ -51,7 +51,7 @@ node {
                 git url: 'https://github.com/jgoldsmith613/DevNation2016_ScalingBDD.git'
                 sh """ 
                     cd app/lab-kie-test
-                    ${mvnHome}/bin/mvn clean install -PoverloadSplit -Drunner.name=D
+                    ${mvnHome}/bin/mvn clean install -PoverloadSplit -Drunner.name=D -Dmaven.test.failure.ignore
                     cd ${WORKSPACE}
                 """
                 stash includes: 'app/lab-kie-test/target/cucumber.json', name: 'groupD'

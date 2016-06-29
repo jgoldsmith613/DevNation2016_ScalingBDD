@@ -36,6 +36,8 @@ public class RemoteExecutionService implements StatelessDecisionService {
 			.getLogger(RemoteExecutionService.class);
 
 	private static String REST_ENDPOINT = "http://bdd-scaling-rules.ci.svc.cluster.local:8080/kie-server/services/rest/server";
+	//private static String REST_ENDPOINT = "http://bdd-scaling-rules-ci.rhel-cdk.10.1.2.2.xip.io/kie-server/services/rest/server";
+
 	private static String REST_USERNAME = "kieserver";
 	private static String REST_PASSWORD = "bdddemo1!";
 	private static String SESSION_ID = "kession1";
