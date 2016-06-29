@@ -1,0 +1,97 @@
+node {
+    
+    stage 'checkout'
+	sh 'sleep 1'
+    stage 'maven build'
+	sh 'sleep 20'
+    stage 'development deploy'
+	sh 'sleep 20' 
+    stage 'acceptence tests'
+    
+        parallel 'group A':{
+            node{ 
+                def mvnHome = tool 'maven'
+		def WORKSPACE = pwd()
+                git url: 'https://github.com/jgoldsmith613/DevNation2016_ScalingBDD.git'
+                sh """
+                    cd app/lab-kie-test
+                    ${mvnHome}/bin/mvn clean install -PoverloadSplit -Drunner.name=A
+		    cd ${WORKSPACE}
+                """
+                stash includes: 'app/lab-kie-test/target/cucumber.json', name: 'groupA'
+            }
+        }, 'group B':{
+            node{ 
+                def mvnHome = tool 'maven'
+                def WORKSPACE = pwd()
+                git url: 'https://github.com/jgoldsmith613/DevNation2016_ScalingBDD.git'
+                sh """ 
+                    cd app/lab-kie-test
+                    ${mvnHome}/bin/mvn clean install -PoverloadSplit -Drunner.name=B
+                    cd ${WORKSPACE}
+                """
+                stash includes: 'app/lab-kie-test/target/cucumber.json', name: 'groupB'
+            }
+        }, 'group C':{
+            node{ 
+                def mvnHome = tool 'maven'
+                def WORKSPACE = pwd()
+                git url: 'https://github.com/jgoldsmith613/DevNation2016_ScalingBDD.git'
+                sh """ 
+                    cd app/lab-kie-test
+                    ${mvnHome}/bin/mvn clean install -PoverloadSplit -Drunner.name=C
+                    cd ${WORKSPACE}
+                """
+                stash includes: 'app/lab-kie-test/target/cucumber.json', name: 'groupC'
+            }
+        }, 'group D':{
+            node{ 
+                def mvnHome = tool 'maven'
+                def WORKSPACE = pwd()
+                git url: 'https://github.com/jgoldsmith613/DevNation2016_ScalingBDD.git'
+                sh """ 
+                    cd app/lab-kie-test
+                    ${mvnHome}/bin/mvn clean install -PoverloadSplit -Drunner.name=D
+                    cd ${WORKSPACE}
+                """
+                stash includes: 'app/lab-kie-test/target/cucumber.json', name: 'groupD'
+            }
+        }
+        
+    stage 'Aggregate Reports'
+    
+        def WORKSPACE = pwd()
+    
+        sh """
+            rm -rf cucumber
+            mkdir cucumber
+            mkdir cucumber/groupA
+            mkdir cucumber/groupB
+	    mkdir cucumber/groupC
+	    mkdir cucumber/groupD
+        """
+        unstash 'groupA'
+        
+        sh 'mv app/lab-kie-test/target/cucumber.json cucumber/groupA/cucumber.json'
+        
+        unstash 'groupB'
+
+        sh 'mv app/lab-kie-test/target/cucumber.json cucumber/groupB/cucumber.json'
+
+        unstash 'groupC'
+
+        sh 'mv app/lab-kie-test/target/cucumber.json cucumber/groupC/cucumber.json'
+       
+        unstash 'groupD'
+
+        sh 'mv app/lab-kie-test/target/cucumber.json cucumber/groupD/cucumber.json'
+
+        step([$class: 'CukedoctorPublisher', featuresDir: 'cucumber', numbered: true, sectAnchors: true, toc: 'RIGHT', format: 'HTML', title: 'Living Documentation split 2'])
+
+    stage 'production deploy'
+	
+        input "Deploy Application to Production?"
+	sh 'sleep 10'
+
+   
+}
