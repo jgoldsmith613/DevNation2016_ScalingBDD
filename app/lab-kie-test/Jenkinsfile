@@ -3,9 +3,9 @@ node {
     stage 'checkout'
 	sh 'sleep 1'
     stage 'maven build'
-	sh 'sleep 20'
+	sh 'sleep 5'
     stage 'development deploy'
-	sh 'sleep 20' 
+	sh 'sleep 10' 
     stage 'acceptence tests'
     
         parallel 'group A':{
