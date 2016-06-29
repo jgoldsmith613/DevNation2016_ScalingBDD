@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rhc.lab.domain.Booking;
 import com.rhc.lab.domain.BookingRequest;
 import com.rhc.lab.domain.BookingResponse;
@@ -22,13 +21,7 @@ import com.rhc.lab.domain.Venue;
 import com.rhc.lab.kie.api.StatelessDecisionService;
 import com.rhc.lab.test.repository.BookingCucumberRepository;
 import com.rhc.lab.test.repository.VenueCucumberRepository;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -39,9 +32,6 @@ import cucumber.api.java.en.When;
 public class BookingValidationSteps {
 	@Resource(name = "decisionService")
 	private StatelessDecisionService decisionService;
-
-	public static final MediaType JSON = MediaType
-			.parse("application/json; charset=utf-8");
 
 	protected static final Logger logger = LoggerFactory
 			.getLogger(BookingValidationSteps.class);
@@ -55,16 +45,6 @@ public class BookingValidationSteps {
 	protected List<Object> facts;
 
 	protected static final String processId = "bookingProcess";
-
-	private OkHttpClient client = new OkHttpClient();
-
-	private ObjectMapper mapper = new ObjectMapper();
-
-	private static String serverUrl = "http://localhost:8081";
-
-	private static String bookingPath = "/bookings";
-	private static String venuePath = "/venues";
-	private static Response restResponse;
 
 	@Given("^a venue \"(.*?)\" with an occupancy of \"(.*?)\"$")
 	public void a_venue_with_an_occupancy_of(String venueName, String occupancy)
@@ -239,31 +219,7 @@ public class BookingValidationSteps {
 	@Then("^wait (\\d+) ms$")
 	public void wait_ms(int arg1) throws Throwable {
 		// Write code here that turns the phrase above into concrete actions
-		Thread.sleep(arg1 * 3);
-	}
-
-	@When("^request to schedule the booking$")
-	public void request_to_schedule_the_booking() throws Throwable {
-		String requestString = mapper.writeValueAsString(request);
-		logger.info("" + requestString);
-		RequestBody body = RequestBody.create(JSON, requestString);
-		Request request = new Request.Builder().url(serverUrl + bookingPath)
-				.post(body).build();
-		Response response = client.newCall(request).execute();
-		restResponse = response;
-
-	}
-
-	@Then("^I expect a denied request$")
-	public void i_expect_a_denied_request() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		Assert.assertEquals(417, restResponse.code());
-	}
-
-	@Then("^I expect a confirmed request$")
-	public void i_expect_a_confirmed_request() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+		Thread.sleep(arg1 * 10);
 	}
 
 	@Given("^all respositories are clear$")

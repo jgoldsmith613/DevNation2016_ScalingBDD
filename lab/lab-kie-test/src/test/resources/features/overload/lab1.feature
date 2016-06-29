@@ -1,4 +1,4 @@
-@Overload @A
+@Overload @C
 Feature: Book Artists at Busy Venues
   Requests should have a valid opening time and closing time
   Venues should not allow two bookings in the same time slot
@@ -15,7 +15,8 @@ Feature: Book Artists at Busy Venues
       | BAND  |
     And the venue is saved
     And a request for a "COMIC" performance by "Aziz Ansari"
-    When validating the booking
+   When validating the booking
+   And wait 150 ms
     Then the booking should be "REVOKED"
 
   Scenario: Deny a BAND to play an overlapping timeslot
@@ -26,7 +27,8 @@ Feature: Book Artists at Busy Venues
     And the venue is saved
     And an existing "BAND" performance by "The Clash" from "01-01-2016 01:00:00" to "01-01-2016 02:00:00"
     And a dated request for a "ORCHESTRA" performance by "The Brooklyn Symphony ORCHESTRA" from "01-01-2016 01:30:00" to "01-01-2016 02:30:00"
-    When validating the booking
+When validating the booking
+And wait 150 ms
     Then the booking should be "REVOKED"
 
   Scenario: Allow a BAND to play an open timeslot
@@ -37,7 +39,8 @@ Feature: Book Artists at Busy Venues
     And the venue is saved
     And an existing "BAND" performance by "The Clash" from "01-01-2016 01:00:00" to "01-01-2016 02:00:00"
     And a dated request for a "ORCHESTRA" performance by "The Brooklyn Symphony ORCHESTRA" from "01-01-2016 02:00:00" to "01-01-2016 03:00:00"
-    When validating the booking
+When validating the booking
+And wait 150 ms
     Then the booking should be "CONFIRMED"
 
   Scenario: Allow a BAND to play a small venue
@@ -47,7 +50,8 @@ Feature: Book Artists at Busy Venues
       | COMIC |
     And the venue is saved
     And a dated request for a "BAND" performance by "The Clash" from "01-01-2016 02:00:00" to "01-01-2016 03:00:00"
-    When validating the booking
+When validating the booking
+And wait 150 ms
     Then the booking should be "CONFIRMED"
 
   Scenario: Deny an ORCHESTRA to play a small venue
@@ -57,5 +61,6 @@ Feature: Book Artists at Busy Venues
       | COMIC |
     And the venue is saved
     And a dated request for a "ORCHESTRA" performance by "The Brooklyn Symphony ORCHESTRA" from "01-01-2016 02:00:00" to "01-01-2016 03:00:00"
-    When validating the booking
+When validating the booking
+And wait 150 ms
     Then the booking should be "REVOKED"

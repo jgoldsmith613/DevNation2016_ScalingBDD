@@ -11,7 +11,7 @@ import cucumber.api.junit.Cucumber;
 @ActiveProfiles("local")
 @ContextConfiguration("kie-context.xml")
 @CucumberOptions(features = "classpath:features/", plugin = {"html:target/cucumber"}, tags = {
-		"~@Ignore", "~@not_implemented", "@Camel"}, glue = {"com.rhc.lab.test.cucumber.camel"})
-public class RemoteCamelRunner {
+		"~@Ignore", "~@not_implemented", "@Overload"}, glue = {"com.rhc.lab.test.cucumber.kie"})
+public class OverloadRunner {
 
 }

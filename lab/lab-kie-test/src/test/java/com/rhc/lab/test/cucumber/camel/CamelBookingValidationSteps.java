@@ -54,7 +54,6 @@ public class CamelBookingValidationSteps {
 	private static String venuePath = "/venues";
 	private static Response restResponse;
 
-
 	@Given("^a venue \"(.*?)\" with an occupancy of \"(.*?)\"$")
 	public void a_venue_with_an_occupancy_of(String venueName, String occupancy)
 			throws Throwable {
@@ -178,8 +177,6 @@ public class CamelBookingValidationSteps {
 		restResponse = response;
 
 	}
-
-
 
 	@Then("^wait (\\d+) ms$")
 	public void wait_ms(int arg1) throws Throwable {
