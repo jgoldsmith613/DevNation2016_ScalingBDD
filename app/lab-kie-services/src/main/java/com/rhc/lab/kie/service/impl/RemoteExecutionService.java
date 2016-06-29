@@ -37,14 +37,15 @@ public class RemoteExecutionService implements StatelessDecisionService {
 	private static final Logger logger = LoggerFactory
 			.getLogger(RemoteExecutionService.class);
 
+
 	private static String REST_PORT = "8080";
 	private static String REST_HOST = "http://localhost";
-	private static String REST_ENDPOINT = "http://localhost:8080/kie-server/services/rest/server";
+	private static String REST_ENDPOINT = "http://bdd-scaling-rules-ci.rhel-cdk.10.1.2.2.xip.io/kie-server/services/rest/server";
 	private static String REST_USERNAME = "kieserver";
-	private static String REST_PASSWORD = "kieserver1!";
+	private static String REST_PASSWORD = "bdddemo1!";
 	private static String SESSION_ID = "kession1";
 	private static String DEFAULT_PROCESS = "bookingProcess";
-	private static String CONTAINER_ID = "booking1.0";
+	private static String CONTAINER_ID = "default";
 
 	@PostConstruct
 	public void setUpProperties() {
@@ -59,13 +60,19 @@ public class RemoteExecutionService implements StatelessDecisionService {
 			REST_PASSWORD = System.getProperty("kie.server.password");
 		if (System.getProperty("kie.session.id") != null)
 			SESSION_ID = System.getProperty("kie.session.id");
-		if (System.getProperty("kie.process.defualt.id") != null)
+		if (System.getProperty("kie.process.default.id") != null)
 			DEFAULT_PROCESS = System.getProperty("kie.process.default.id");
 		if (System.getProperty("kie.server.container.id") != null)
 			CONTAINER_ID = System.getProperty("kie.server.container.id");
+		if (System.getProperty("kie.server.rest.url")==null){
+			if (System.getProperty("kie.server.host") != null
+					|| System.getProperty("kie.server.port") != null)
+			REST_ENDPOINT = REST_HOST + ":" + REST_PORT
+					+ "/kie-server/services/rest/server";
+		}else {
+			REST_ENDPOINT=System.getProperty("kie.server.rest.url");
+		}
 
-		REST_ENDPOINT = REST_HOST + ":" + REST_PORT
-				+ "/kie-server/services/rest/server";
 	}
 
 	@Override

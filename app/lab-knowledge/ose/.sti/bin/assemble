@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Call default assemble script
+/usr/local/s2i/assemble
+
+rm -rf $JBOSS_HOME/standalone/deployments/kie-server.war
+
+mv /tmp/src/kie-server/kie-server.war $JBOSS_HOME/standalone/deployments/.
