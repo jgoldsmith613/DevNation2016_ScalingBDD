@@ -35,12 +35,12 @@ public class RemoteExecutionService implements StatelessDecisionService {
 	private static final Logger logger = LoggerFactory
 			.getLogger(RemoteExecutionService.class);
 
-	private static String REST_ENDPOINT = "http://localhost:8080/kie-server/services/rest/server";
+	private static String REST_ENDPOINT = "http://bdd-scaling-rules-ci.rhel-cdk.10.1.2.2.xip.io/kie-server/services/rest/server";
 	private static String REST_USERNAME = "kieserver";
-	private static String REST_PASSWORD = "kieserver1!";
+	private static String REST_PASSWORD = "bdddemo1!";
 	private static String SESSION_ID = "kession1";
 	private static String DEFAULT_PROCESS = "bookingProcess";
-	private static String CONTAINER_ID = "booking1.0";
+	private static String CONTAINER_ID = "default";
 
 	@Override
 	public <T> T execute(Collection<Object> facts, String processId,
