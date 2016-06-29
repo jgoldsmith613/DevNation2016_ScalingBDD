@@ -2,6 +2,7 @@ package com.rhc.lab.route;
 
 import javax.annotation.Resource;
 
+import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
@@ -49,7 +50,8 @@ public class LabRouteBuilder extends RouteBuilder {
 				.type(BookingRequest.class).produces("application/json")
 				.to("direct:updateBooking").delete("/{id}")
 				.to("direct:deleteBooking").get("/{id}")
-				.to("direct:getBookingById");
+				.to("direct:getBookingById").delete()
+				.to("direct:deleteAllBookings");
 
 		rest("/venues")
 				.verb("options")
@@ -72,7 +74,7 @@ public class LabRouteBuilder extends RouteBuilder {
 				.get("/{id}").to("direct:getVenueById").delete("/{id}")
 				.to("direct:deleteVenue").put("/{id}")
 				.consumes("application/json").type(Venue.class)
-				.to("direct:updateVenue");
+				.to("direct:updateVenue").delete().to("direct:deleteAllVenues");
 
 		rest("/performancetypes").get().to("direct:getPerformanceTypes");
 
@@ -89,7 +91,12 @@ public class LabRouteBuilder extends RouteBuilder {
 				.bean(localDecisionService,
 						"execute(${body}, bookingProcess, ${header.responseClazz})")
 				.log(LoggingLevel.INFO, "Returned Body ${body}")
-				.bean(requestService, "saveBooking").to("mock:end");
+				.bean(requestService, "saveBooking").choice().when()
+				.simple("${body} == null").setHeader(Exchange.CONTENT_TYPE)
+				.constant("text/plain").setBody()
+				.constant("Booking Request cannot be honnored")
+				.setHeader(Exchange.HTTP_RESPONSE_CODE).constant("417").end()
+				.to("mock:end");
 
 		// TODO actually update the Booking
 		from("direct:updateBooking").transform().constant("update Booking");
@@ -124,6 +131,14 @@ public class LabRouteBuilder extends RouteBuilder {
 		from("direct:getPerformanceTypes")
 				.log(LoggingLevel.INFO, "get performance Types")
 				.bean(requestService, "getPerformanceTypes").to("mock:end");
+
+		from("direct:deleteAllBookings")
+				.log(LoggingLevel.INFO, "delete all bookings")
+				.bean(requestService, "deleteAllBookings").to("mock:end");
+
+		from("direct:deleteAllVenues")
+				.log(LoggingLevel.INFO, "delete all venues")
+				.bean(requestService, "deleteAllVenues").to("mock:end");
 	}
 
 }

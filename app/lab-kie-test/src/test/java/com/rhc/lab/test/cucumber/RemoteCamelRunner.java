@@ -11,6 +11,7 @@ import cucumber.api.junit.Cucumber;
 @ActiveProfiles("local")
 @ContextConfiguration("kie-context.xml")
 @CucumberOptions(features = "classpath:features/", plugin = {"html:target/cucumber"}, tags = {
-		"~@Ignore", "~@not_implemented"}, glue = {"com.rhc"})
-public class RunLocalCukesTest {
+		"~@Ignore", "~@not_implemented", "@Camel"}, glue = {"com.rhc.lab.test.cucumber.camel"})
+public class RemoteCamelRunner {
+
 }
