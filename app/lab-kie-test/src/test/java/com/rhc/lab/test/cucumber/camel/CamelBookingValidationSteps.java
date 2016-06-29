@@ -49,7 +49,7 @@ public class CamelBookingValidationSteps {
 
 	private ObjectMapper mapper = new ObjectMapper();
 
-	private static String serverHost = "http://localhost";
+	private static String serverHost = "http://camel-eap.ci.svc.cluster.local";
 	private static String serverPort = ":8081";
 
 	private static String bookingPath = "/bookings";

@@ -13,11 +13,11 @@ node {
         git url: 'https://github.com/jgoldsmith613/DevNation2016_ScalingBDD.git'
         sh """
             cd app/lab-kie-test
-            ${mvnHome}/bin/mvn clean install -Poverload -Dmaven.test.failure.ignore 
+            ${mvnHome}/bin/mvn clean install -Papi -Dmaven.test.failure.ignore 
             cd ${WORKSPACE}
         """
 
-        step([$class: 'CukedoctorPublisher', featuresDir: 'app/lab-kie-test/target', numbered: true, sectAnchors: true, toc: 'RIGHT', format: 'HTML', title: 'Living Documentation bulk'])
+        step([$class: 'CukedoctorPublisher', featuresDir: 'app/lab-kie-test/target', numbered: true, sectAnchors: true, toc: 'RIGHT', format: 'HTML', title: 'Living Documentation camel'])
 
     stage 'production deploy'
 	

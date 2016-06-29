@@ -86,7 +86,7 @@ node {
 
         sh 'mv app/lab-kie-test/target/cucumber.json cucumber/groupD/cucumber.json'
 
-        step([$class: 'CukedoctorPublisher', featuresDir: 'cucumber', numbered: true, sectAnchors: true, toc: 'RIGHT', format: 'HTML', title: 'Living Documentation split 2'])
+        step([$class: 'CukedoctorPublisher', featuresDir: 'cucumber', numbered: true, sectAnchors: true, toc: 'RIGHT', format: 'HTML', title: 'Living Documentation Parallelization'])
 
     stage 'production deploy'
 	

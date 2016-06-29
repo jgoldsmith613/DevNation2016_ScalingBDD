@@ -22,7 +22,7 @@ public class LabRouteBuilder extends RouteBuilder {
 	@Resource(name = "decisionService")
 	StatelessDecisionService localDecisionService;
 
-	private static String host = "localhost";
+	private static String host = "0.0.0.0";
 	private static String port = "8081";
 
 	@PostConstruct
