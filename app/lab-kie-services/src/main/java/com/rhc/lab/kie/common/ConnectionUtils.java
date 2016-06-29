@@ -19,7 +19,8 @@ public class ConnectionUtils {
 	}
 
 	public static String getKieServerPassword() {
-		return getPropertyValue(KIE_SERVER_PASSWORD_PROP, KIE_SERVER_PASSWORD_DEFAULT);
+		return getPropertyValue(KIE_SERVER_PASSWORD_PROP,
+				KIE_SERVER_PASSWORD_DEFAULT);
 	}
 
 	private static String getPropertyValue(String name, String defaultValue) {
