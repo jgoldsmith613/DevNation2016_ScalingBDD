@@ -25,10 +25,10 @@ import com.rhc.lab.domain.Venue;
 import com.rhc.lab.service.BookingRequestService;
 
 /**
- *
+ * 
  * This service is used by Camel to execute rules and call saves in the various
  * DAO repositories.
- *
+ * 
  */
 @Service("requestService")
 public class BookingRequestServiceImpl implements BookingRequestService {
@@ -54,7 +54,7 @@ public class BookingRequestServiceImpl implements BookingRequestService {
 
 	/**
 	 * Builds session that is needed for the rules session.
-	 *
+	 * 
 	 * @param request
 	 * @return
 	 * @throws Exception
@@ -73,7 +73,7 @@ public class BookingRequestServiceImpl implements BookingRequestService {
 	/**
 	 * Save new booking based on the booking response. Only saves booking if
 	 * Booking Status is confirmed
-	 *
+	 * 
 	 * @param response
 	 *            - the response from the booking rules session
 	 * @return id of new Booking
@@ -103,7 +103,7 @@ public class BookingRequestServiceImpl implements BookingRequestService {
 	/**
 	 * Returns the venue mentioned in the request and all bookings associated
 	 * with that venue
-	 *
+	 * 
 	 * @param request
 	 * @return
 	 */
@@ -126,7 +126,7 @@ public class BookingRequestServiceImpl implements BookingRequestService {
 
 	/**
 	 * This method returns all Bookings in the collection
-	 *
+	 * 
 	 * @return
 	 */
 	@Override
@@ -139,7 +139,7 @@ public class BookingRequestServiceImpl implements BookingRequestService {
 
 	/**
 	 * This method returns all venues in the collection
-	 *
+	 * 
 	 * @return
 	 */
 	@Override
@@ -149,7 +149,7 @@ public class BookingRequestServiceImpl implements BookingRequestService {
 
 	/**
 	 * This meathod will save a venue to the collection
-	 *
+	 * 
 	 * @param id
 	 */
 	@Override
@@ -165,7 +165,7 @@ public class BookingRequestServiceImpl implements BookingRequestService {
 
 	/**
 	 * Get Venue by Id. Id is found in the header named id
-	 *
+	 * 
 	 * @param id
 	 */
 	@Override
@@ -175,7 +175,7 @@ public class BookingRequestServiceImpl implements BookingRequestService {
 
 	/**
 	 * Get Booking by Id. Id is found on the Camel header named id
-	 *
+	 * 
 	 * @param id
 	 * @return
 	 */
@@ -186,7 +186,7 @@ public class BookingRequestServiceImpl implements BookingRequestService {
 
 	/**
 	 * Method used to delete a particular booking
-	 *
+	 * 
 	 * @param id
 	 */
 	@Override
@@ -196,7 +196,7 @@ public class BookingRequestServiceImpl implements BookingRequestService {
 
 	/**
 	 * Method used to update a particular booking
-	 *
+	 * 
 	 * @param id
 	 *            of booking
 	 */

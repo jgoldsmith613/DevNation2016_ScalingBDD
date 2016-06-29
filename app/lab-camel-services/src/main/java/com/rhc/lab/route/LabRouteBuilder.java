@@ -2,10 +2,7 @@ package com.rhc.lab.route;
 
 import javax.annotation.Resource;
 
-<<<<<<< HEAD
 import org.apache.camel.Exchange;
-=======
->>>>>>> c5f892dea7a7c07da389777e3f59630f9d08efc1
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
@@ -56,7 +53,6 @@ public class LabRouteBuilder extends RouteBuilder {
 				.to("direct:getBookingById").delete()
 				.to("direct:deleteAllBookings");
 
-
 		rest("/venues")
 				.verb("options")
 				.route()
@@ -79,7 +75,6 @@ public class LabRouteBuilder extends RouteBuilder {
 				.to("direct:deleteVenue").put("/{id}")
 				.consumes("application/json").type(Venue.class)
 				.to("direct:updateVenue").delete().to("direct:deleteAllVenues");
-
 
 		rest("/performancetypes").get().to("direct:getPerformanceTypes");
 
